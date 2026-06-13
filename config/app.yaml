@@ -1,0 +1,13 @@
+app:
+  name: hermes-agent-app
+  version: "0.1.0"
+  description: Modern agentic app scaffold with orchestrator, tools, and memory
+
+agent:
+  default: default
+  max_turns: 30
+
+watcher:
+  report_file: Report.json
+  instruction_file: instruction.json
+  notify_via: telegram

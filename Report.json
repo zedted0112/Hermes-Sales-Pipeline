@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.1",
+  "schema": "hermes-agent-app-report",
+  "project": {
+    "name": "hermes-agent-app",
+    "root": "/Users/himalayancoder/DevSpace/Projects/cheetclaw/hermes agent",
+    "version": "0.3.0",
+    "phase": "agentic_loop",
+    "updated_at": "2026-06-13T23:06:14+05:30"
+  },
+  "summary": "User interaction",
+  "components": {
+    "chat_ui": {
+      "path": "web/static/index.html",
+      "server": "src/hermes_app/web/server.py",
+      "url": "http://127.0.0.1:8765",
+      "status": "active",
+      "start_command": "PYTHONPATH=src python3 -m hermes_app.main chat"
+    },
+    "agent_loop": {
+      "path": "src/hermes_app/agent/loop.py",
+      "model": "gemini-2.5-flash",
+      "status": "active",
+      "description": "Gemini tool-calling loop with update_report after each turn"
+    },
+    "tools": {
+      "status": "active",
+      "registered_tools": [
+        "ping",
+        "read_report",
+        "update_report",
+        "file_info",
+        "list_tools_dir",
+        "system_info",
+        "send_telegram"
+      ]
+    },
+    "watcher": {
+      "status": "active",
+      "cron_job": "watch-report-json",
+      "schedule": "every 1m",
+      "deliver": "telegram:1708753196",
+      "note": "Auto-fires when agent saves Report.json \u2014 no manual cron run needed"
+    }
+  },
+  "changes": {
+    "change_type": "chat",
+    "since_last_report": [
+      "Added AgentLoop with Gemini tool-calling (agent/loop.py)",
+      "Added update_report tool \u2014 saves Report.json and triggers Telegram watcher",
+      "Built chat UI at http://127.0.0.1:8765 (FastAPI + web/static)",
+      "Agent auto-logs every chat turn \u2014 no manual hermes cron run required",
+      "User said hi and received a warm greeting.",
+      "User greeted the bot"
+    ],
+    "last_change_at": "2026-06-13T23:06:14+05:30",
+    "changed_by": "hermes-app-agent"
+  },
+  "status": {
+    "health": "ok",
+    "ready_for_development": true,
+    "blockers": [],
+    "next_steps": [
+      "Run: pip install -r requirements.txt && PYTHONPATH=src python3 -m hermes_app.main chat",
+      "Open http://127.0.0.1:8765 and type hi",
+      "Wait ~1 min for Telegram watcher after agent updates Report.json"
+    ]
+  },
+  "chat_log": {
+    "entries": [
+      {
+        "at": "2026-06-13T23:03:18+05:30",
+        "note": "User said hi and received a warm greeting."
+      },
+      {
+        "at": "2026-06-13T23:06:14+05:30",
+        "note": "User greeted the bot"
+      }
+    ],
+    "last_interaction_at": "2026-06-13T23:06:14+05:30"
+  },
+  "alerts": [],
+  "agent_instructions": {
+    "on_watcher_trigger": "Summarize summary and latest chat_log entry if present.",
+    "priority_fields": [
+      "summary",
+      "changes.since_last_report",
+      "chat_log",
+      "components.chat_ui"
+    ]
+  }
+}

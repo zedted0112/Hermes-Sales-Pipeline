@@ -1,0 +1,9 @@
+agents:
+  default:
+    role: primary
+    orchestrator: src.hermes_app.agent.orchestrator.AgentOrchestrator
+    toolsets:
+      - file
+      - terminal
+      - web
+    memory: session

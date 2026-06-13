@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "schema": "hermes-watcher-instructions",
+  "purpose": "Tell Hermes how to interpret Report.json when the file watcher fires a Telegram alert.",
+  "project_root": "/Users/himalayancoder/DevSpace/Projects/cheetclaw/hermes agent",
+  "watch_targets": [
+    {
+      "file": "Report.json",
+      "role": "primary",
+      "description": "Live project status, folder map, changes, and alerts"
+    },
+    {
+      "file": "instruction.json",
+      "role": "meta",
+      "description": "This file — interpretation rules for the agent"
+    }
+  ],
+  "on_file_change": {
+    "trigger": "Report.json mtime changed (hermes cron watch-report-json)",
+    "workflow": [
+      "1. Read instruction.json (this file)",
+      "2. Read Report.json from project_root",
+      "3. Compare changes.since_last_report and changes.change_type",
+      "4. Check status.health, status.blockers, and alerts array",
+      "5. Send a concise Telegram summary to the user"
+    ],
+    "telegram_format": {
+      "style": "short, scannable, emoji headers optional",
+      "sections": [
+        "Headline — one line from Report.summary",
+        "What changed — bullet list from changes.since_last_report",
+        "Status — health + any blockers",
+        "Next — top item from status.next_steps if relevant"
+      ],
+      "max_words": 400,
+      "example": "📋 Project update\\n\\nScaffold complete — agentic app structure is ready.\\n\\nChanges:\\n• Added orchestrator, tools, memory modules\\n• Config and SOUL.md in place\\n\\nStatus: ok — no blockers."
+    }
+  },
+  "field_reference": {
+    "Report.summary": "Human-readable headline — use as opening line",
+    "Report.changes.since_last_report": "List of changes since last update — main body",
+    "Report.changes.change_type": "Category: initial_scaffold | feature | fix | deploy | alert",
+    "Report.status.health": "ok | degraded | error",
+    "Report.status.blockers": "Issues preventing progress — mention if non-empty",
+    "Report.alerts": "Urgent items — always mention if non-empty",
+    "Report.folder_structure": "Reference only — do not dump full tree unless user asks",
+    "Report.components": "Module status map — mention if a component status changed"
+  },
+  "update_protocol": {
+    "when_you_change_the_project": [
+      "Edit Report.json: append to changes.since_last_report",
+      "Set changes.change_type and changes.last_change_at (ISO 8601 UTC)",
+      "Refresh project.updated_at",
+      "Update summary to reflect current state",
+      "Run: python scripts/sync_report.py (optional — refreshes folder tree)"
+    ],
+    "watcher_will": "Detect Report.json save → cron runs → Hermes reads both files → Telegram summary"
+  },
+  "agent_mode": {
+    "enabled": true,
+    "cron_job": "watch-report-json",
+    "prompt_hint": "Report.json was updated. Follow instruction.json. Read both files from project_root and send the user a Telegram-friendly summary of what changed."
+  }
+}
