@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bull's Legacy Gym — Dehradun</title>
+  <title>{{PAGE_TITLE}}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
@@ -325,53 +325,41 @@
 
   <header class="nav" id="nav">
     <div class="nav-inner">
-      <a href="#" class="logo"><span class="logo-mark">🐂</span> Bull's Legacy</a>
+      <a href="#" class="logo"><span class="logo-mark">{{LOGO_EMOJI}}</span> {{LOGO_NAME}}</a>
       <nav class="nav-links">
         <a href="#programs">Programs</a>
         <a href="#why">Why Us</a>
         <a href="#visit">Visit</a>
       </nav>
-      <a href="tel:+919759816924" class="nav-cta">Book Free Trial</a>
+      <a href="{{NAV_CTA_HREF}}" class="nav-cta">{{NAV_CTA_TEXT}}</a>
     </div>
   </header>
 
   <section class="hero">
     <div class="hero-bg">
-      <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80&auto=format&fit=crop" alt="Gym training floor" width="1920" height="1080">
+      <img src="{{HERO_IMG}}" alt="{{HERO_ALT}}" width="1920" height="1080">
     </div>
     <div class="wrap hero-content">
-      <div class="eyebrow"><span>★ 4.5</span> · 35 Google reviews · Kanwali Road, Dehradun</div>
+      <div class="eyebrow">{{EYEBROW}}</div>
       <h1>
-        <span class="line"><span class="word">Bull's</span> <span class="word">Legacy</span> <span class="word">Gym</span></span>
-        <span class="line"><span class="word">Your Strength in Dehradun</span></span>
+        {{HERO_H1_HTML}}
       </h1>
-      <p class="hero-sub">Unisex gym on Kanwali Road · Body Building · Weight Training · Cardio · Personal Training</p>
+      <p class="hero-sub">{{HERO_SUB}}</p>
       <div class="hero-actions">
-        <a href="tel:+919759816924" class="btn btn-primary">Book Free Trial</a>
-        <a href="https://wa.me/919217002598" class="btn btn-ghost" target="_blank" rel="noopener">WhatsApp Now</a>
+        <a href="{{PRIMARY_CTA_HREF}}" class="btn btn-primary">{{PRIMARY_CTA_TEXT}}</a>
+        <a href="{{SECONDARY_CTA_HREF}}" class="btn btn-ghost" target="_blank" rel="noopener">{{SECONDARY_CTA_TEXT}}</a>
       </div>
       <div class="stats">
-        <div class="stat"><strong data-count="35">0</strong><span>Google reviews</span></div>
-        <div class="stat"><strong data-count="4.5" data-decimal="1">0</strong><span>Star rating</span></div>
-        <div class="stat"><strong>6am</strong><span>Opens daily</span></div>
+        <div class="stat"><strong data-count="{{STAT_REVIEWS}}">0</strong><span>Google reviews</span></div>
+        <div class="stat"><strong data-count="{{STAT_RATING}}" data-decimal="{{STAT_RATING_DECIMAL}}">0</strong><span>Star rating</span></div>
+        <div class="stat"><strong>{{STAT_OPEN}}</strong><span>Opens daily</span></div>
       </div>
     </div>
   </section>
 
   <div class="marquee-wrap" aria-hidden="true">
     <div class="marquee">
-      <span>Body Building <em>·</em></span>
-      <span>Weight Training <em>·</em></span>
-      <span>Cardio Zone <em>·</em></span>
-      <span>Personal Training <em>·</em></span>
-      <span>Unisex Gym <em>·</em></span>
-      <span>Dehradun <em>·</em></span>
-      <span>Body Building <em>·</em></span>
-      <span>Weight Training <em>·</em></span>
-      <span>Cardio Zone <em>·</em></span>
-      <span>Personal Training <em>·</em></span>
-      <span>Unisex Gym <em>·</em></span>
-      <span>Dehradun <em>·</em></span>
+      {{MARQUEE_HTML}}
     </div>
   </div>
 
@@ -379,28 +367,10 @@
     <div class="wrap">
       <div class="section-head reveal">
         <h2>Our Programs</h2>
-        <p>Built for beginners and serious lifters — train your way at Kanwali Road's neighborhood gym.</p>
+        <p>{{PROGRAMS_BLURB}}</p>
       </div>
       <div class="bento">
-        <article class="card featured reveal">
-          <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=1200&q=80&auto=format&fit=crop" alt="Strength training" loading="lazy">
-          <div class="card-body">
-            <h3>Body Building</h3>
-            <p>Serious iron, real results — free weights and machines for every level.</p>
-          </div>
-        </article>
-        <article class="card reveal">
-          <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80&auto=format&fit=crop" alt="Weight training" loading="lazy">
-          <div class="card-body"><h3>Strength Training</h3><p>Compound lifts, progressive overload, proper form.</p></div>
-        </article>
-        <article class="card reveal">
-          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&auto=format&fit=crop" alt="Cardio zone" loading="lazy">
-          <div class="card-body"><h3>Cardio Zone</h3><p>Treadmills, bikes, and HIIT to fuel your endurance.</p></div>
-        </article>
-        <article class="card reveal">
-          <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&q=80&auto=format&fit=crop" alt="Personal training" loading="lazy">
-          <div class="card-body"><h3>Personal Training</h3><p>1-on-1 coaching tailored to your goals.</p></div>
-        </article>
+        {{BENTO_HTML}}
       </div>
     </div>
   </section>
@@ -408,25 +378,11 @@
   <section id="why">
     <div class="wrap">
       <div class="section-head reveal">
-        <h2>Why Bull's Legacy</h2>
-        <p>Strong community. Accessible training. No fluff — just a gym that works.</p>
+        <h2>{{WHY_TITLE}}</h2>
+        <p>{{WHY_BLURB}}</p>
       </div>
       <div class="why-grid">
-        <div class="why-item reveal">
-          <div class="icon">💪</div>
-          <h3>Real Equipment</h3>
-          <p>Free weights, machines, and cardio — everything you need under one roof.</p>
-        </div>
-        <div class="why-item reveal">
-          <div class="icon">🤝</div>
-          <h3>Community Vibe</h3>
-          <p>35+ members already trust us — join Dehradun's neighborhood strength crew.</p>
-        </div>
-        <div class="why-item reveal">
-          <div class="icon">📱</div>
-          <h3>Book in Seconds</h3>
-          <p>Free trial via phone or WhatsApp — no complicated signup.</p>
-        </div>
+        {{WHY_ITEMS_HTML}}
       </div>
     </div>
   </section>
@@ -435,19 +391,17 @@
     <div class="wrap">
       <div class="visit reveal">
         <div class="visit-img">
-          <img src="https://images.unsplash.com/photo-1540497077202-7bf8a69ad5fd?w=1200&q=80&auto=format&fit=crop" alt="Gym community" loading="lazy">
+          <img src="{{VISIT_IMG}}" alt="Visit us" loading="lazy">
         </div>
         <div class="visit-info">
           <h2>Visit Us</h2>
           <address>
-            2 Keshav Road, Kanwali Road<br>
-            near Laxman Police Chowki<br>
-            Dehradun, Uttarakhand 248001
+            {{ADDRESS_HTML}}
           </address>
-          <p class="hours">Mon–Sat · 6am – 11pm</p>
+          <p class="hours">{{HOURS}}</p>
           <div class="contact-row">
-            <a href="tel:+919759816924" class="btn btn-primary">Call +91 97598 16924</a>
-            <a href="https://wa.me/919217002598" class="btn btn-ghost" target="_blank" rel="noopener">WhatsApp</a>
+            <a href="{{CALL_HREF}}" class="btn btn-primary">{{CALL_LABEL}}</a>
+            <a href="{{WA_HREF}}" class="btn btn-ghost" target="_blank" rel="noopener">WhatsApp</a>
           </div>
         </div>
       </div>
@@ -455,13 +409,13 @@
   </section>
 
   <footer class="wrap">
-    <span>Bull's Legacy Gym — Dehradun</span>
-    <span>Unisex fitness · Kanwali Road</span>
+    <span>{{FOOTER_1}}</span>
+    <span>{{FOOTER_2}}</span>
   </footer>
 
   <div class="sticky-cta">
-    <a href="tel:+919759816924" class="s-book">Book Trial</a>
-    <a href="https://wa.me/919217002598" class="s-wa">WhatsApp</a>
+    <a href="{{STICKY_PRIMARY_HREF}}" class="s-book">{{STICKY_PRIMARY_TEXT}}</a>
+    <a href="{{WA_HREF}}" class="s-wa">{{STICKY_SECONDARY_TEXT}}</a>
   </div>
 
   <script>

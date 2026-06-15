@@ -34,7 +34,24 @@ Replace `{business}`, `{city}`, `{category}`, `{slug}`:
 
 **One-shot bundle:** `/sales-pipeline` (loads all skills)
 
-## Category demo templates (v1.1)
+## Build (Hermes agent)
+
+**Always run the script** — do not write HTML manually for gym/salon:
+
+```bash
+python3 ~/.hermes/skills/lead-demo-site/scripts/build_demo.py {slug}
+```
+
+Example:
+
+```bash
+python3 ~/.hermes/skills/lead-demo-site/scripts/build_demo.py om-sports-and-fitness-center
+open ~/.hermes/leads/demos/om-sports-and-fitness-center/index.html
+```
+
+Templates with `{{PLACEHOLDERS}}` live in `templates/`. The script fills them from `lead-research.json`.
+
+## Category demo templates (v1.2)
 
 | Category | HTML template | Reference |
 |----------|---------------|-----------|
