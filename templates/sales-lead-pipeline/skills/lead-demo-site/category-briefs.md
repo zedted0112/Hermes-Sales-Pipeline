@@ -6,6 +6,8 @@ Use these when building `lead-demo-site`. The goal is **their business, their vi
 
 ## Gym / fitness
 
+**Template:** `templates/gym-modern.html` (Bull's Legacy reference) — **mandatory starting point**
+
 **Feel:** Bold, energetic, confident. Dark or high-contrast accents. Movement.
 
 **Hero copy pattern:**
@@ -27,6 +29,8 @@ Use these when building `lead-demo-site`. The goal is **their business, their vi
 ---
 
 ## Beauty salon / spa
+
+**Template:** `templates/salon-modern.html` (Shear Genius reference) — **mandatory starting point**
 
 **Feel:** Elegant, calm, premium. Soft curves, generous whitespace.
 

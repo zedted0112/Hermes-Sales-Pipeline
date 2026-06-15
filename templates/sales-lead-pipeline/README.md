@@ -34,6 +34,15 @@ Replace `{business}`, `{city}`, `{category}`, `{slug}`:
 
 **One-shot bundle:** `/sales-pipeline` (loads all skills)
 
+## Category demo templates (v1.1)
+
+| Category | HTML template | Reference |
+|----------|---------------|-----------|
+| Gym / fitness | `skills/lead-demo-site/templates/gym-modern.html` | Bull's Legacy Gym |
+| Beauty salon | `skills/lead-demo-site/templates/salon-modern.html` | Shear Genius Salon |
+
+Hermes loads these via `skill_view` and swaps in lead content — see `templates/SUBSTITUTION.md`.
+
 ## Output paths (per lead)
 
 ```

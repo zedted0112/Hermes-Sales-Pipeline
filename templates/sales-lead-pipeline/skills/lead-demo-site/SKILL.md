@@ -4,7 +4,7 @@ description: >-
   Build a business-specific UI-only demo website for a sales lead — not a generic
   template. Requires lead-research.json first. Uses claude-design + popular-web-designs.
   no backend. Feels like what THEIR gym/salon/clinic should look like online.
-version: 1.0.0
+version: 1.1.0
 author: Hermes Agent
 license: MIT
 triggers:
@@ -119,18 +119,38 @@ Use their **name in the hero**, **city in subhead**, **category-appropriate imag
 2. Read `~/.hermes/leads/research/{slug}.json`
 3. If missing → stop and run `lead-research` — **do not guess copy**
 
-### Step 1 — Brief (from research file)
+### Step 1 — Pick category template (mandatory for gym & salon)
 
-From `lead-research.json` + `category-briefs.md`, decide:
+**Do not invent layout for gym or salon.** Load the locked modern template:
 
-- **Vibe** — use `brand_signals.vibe` + category defaults
-- **Hero** — use `content_for_ui.hero_headline` and `hero_subhead` **verbatim** (minor grammar ok)
-- **Sections** — build from `content_for_ui.sections` + `offerings.services`
-- **CTAs** — use `content_for_ui.cta_primary` + gaps from `gaps.demo_should_highlight`
+| `meta.category` | Template | Load with |
+|-----------------|----------|-----------|
+| Gym, fitness, gymnasium, crossfit, health club | `templates/gym-modern.html` | Bull's Legacy reference — dark, Syne, bento, stats |
+| Beauty salon, salon, spa, unisex salon, hair salon | `templates/salon-modern.html` | Shear Genius reference — cream/sage, gallery, services |
 
-### Step 2 — Design tokens (modern, not generic)
+```
+skill_view(name="lead-demo-site", file_path="templates/gym-modern.html")
+skill_view(name="lead-demo-site", file_path="templates/SUBSTITUTION.md")
+```
 
-**Mandatory modern craft** — demos must feel 2024+, not 2015 template:
+Read `templates/README.md` + `templates/SUBSTITUTION.md` in this skill folder.
+
+**Procedure:** Copy template HTML → replace content from `lead-research.json` only → keep CSS/JS/motion/structure **identical**.
+
+### Step 2 — Brief (from research file)
+
+From `lead-research.json` + `category-briefs.md`, map content into template slots (see SUBSTITUTION.md):
+
+- **Hero** — `content_for_ui.hero_headline` and `hero_subhead` **verbatim** (minor grammar ok)
+- **Sections** — `content_for_ui.sections` + `offerings.services`
+- **CTAs** — `content_for_ui.cta_primary` + `gaps.demo_should_highlight`
+- **Contact** — real `tel:` / `wa.me` / `mailto:` from `contact.*`
+
+### Step 3 — Design tokens (other categories only)
+
+For **gym and salon**, design is locked by category template — skip free-form design.
+
+For restaurant, clinic, coaching (no template yet):
 
 1. Load **`claude-design`** — follow motion discipline (ease-out entrances, stagger, reduced-motion)
 2. Load **`web-animation-design`** — timing, easing, scroll-trigger rules
@@ -158,10 +178,12 @@ Optional hub skills (install via `hermes skills install` if user wants more moti
 
 Do **not** copy Stripe/Linear look for a local gym unless adapted — use templates for **craft** (spacing, motion, photography), not brand clone.
 
-### Step 3 — Build single HTML file
+### Step 4 — Build single HTML file
 
-- **One file:** `index.html` with embedded CSS + JS (scroll reveals, mobile nav, stat counters)
-- **Mobile-first** — most leads open on phone; test sticky CTA
+**Gym / salon:** Start from category template file. Swap content per SUBSTITUTION.md. Do not remove sections or rewrite CSS.
+
+**All categories:**
+- **One file:** `index.html` with embedded CSS + JS (from template for gym/salon)
 - **Real content:** from `lead-research.json` — business name, city, services
 - **Contact block:** real `tel:` and `https://wa.me/` links
 - **Images:** min 3× `images.unsplash.com` URLs (hero + 2 section photos). No `source.unsplash.com`.
@@ -169,7 +191,7 @@ Do **not** copy Stripe/Linear look for a local gym unless adapted — use templa
 - **Typography:** distinctive pair — e.g. Syne/Bebas + DM Sans, or Space Grotesk + Inter. **Not** Roboto/Oswald/Arial.
 - **No backend:** forms use `action="#"` or `tel:` / `wa.me`
 
-### Step 4 — Save
+### Step 5 — Save
 
 ```
 ~/.hermes/leads/demos/{slug}/index.html
@@ -187,12 +209,13 @@ Do **not** copy Stripe/Linear look for a local gym unless adapted — use templa
   "category": "Gym",
   "demo_path": "~/.hermes/leads/demos/bulls-legacy-gym/index.html",
   "generated_at": "ISO-8601",
-  "lead_source": "local-lead-finder",
+  "lead_source": "lead-research",
+  "template_used": "gym-modern",
   "preview_command": "open ~/.hermes/leads/demos/bulls-legacy-gym/index.html"
 }
 ```
 
-### Step 5 — Verify
+### Step 6 — Verify
 
 1. `browser_navigate` to `file://` path OR tell Captain: `open <path>`
 2. Optional: `browser_vision` — confirm business name visible, mobile layout ok
@@ -217,6 +240,7 @@ See [category-briefs.md](category-briefs.md) for full detail. Quick map:
 - Dark-mode crypto startup aesthetic for a local salon
 - Lorem ipsum paragraphs
 - Fake testimonials with American names in Dehradun
+- Building gym or salon demos from scratch (must use `templates/gym-modern.html` or `templates/salon-modern.html`)
 - Asking user to pick a template before building
 
 ## Output to Captain
@@ -239,7 +263,8 @@ See [category-briefs.md](category-briefs.md) for full detail. Quick map:
 - [ ] Single `index.html`, no backend
 - [ ] Saved under `~/.hermes/leads/demos/{slug}/`
 - [ ] `meta.json` written
-- [ ] **Modern UI:** motion, 3+ images, distinctive fonts — not generic dark template
+- [ ] **Gym/salon:** built from `templates/gym-modern.html` or `templates/salon-modern.html` (not from scratch)
+- [ ] `meta.json` includes `template_used`
 - [ ] `prefers-reduced-motion` respected
 
 ## V2 (not in scope)

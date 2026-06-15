@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shear Genius Unisex Salon — Dehradun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #faf7f2;
+      --blush: #f3e8e2;
+      --sage: #8a9a7b;
+      --sage-dark: #6b7a5e;
+      --gold: #c4a574;
+      --gold-light: #e8d5b5;
+      --text: #2c2825;
+      --muted: #6f6760;
+      --white: #ffffff;
+      --radius: 24px;
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Nav */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 1.5rem;
+      transition: background .4s var(--ease), box-shadow .4s;
+    }
+    .nav.scrolled {
+      background: rgba(250, 247, 242, .88);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 rgba(44, 40, 37, .06);
+    }
+    .nav-inner {
+      max-width: 1140px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em;
+    }
+    .logo em { font-style: italic; color: var(--sage-dark); }
+    .nav-links { display: none; gap: 2rem; font-size: .9rem; color: var(--muted); }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      padding: .6rem 1.25rem; border-radius: 999px;
+      background: var(--text); color: var(--cream); font-size: .85rem; font-weight: 500;
+      transition: transform .25s, background .25s;
+    }
+    .nav-cta:hover { transform: scale(1.03); background: var(--sage-dark); }
+
+    /* Hero */
+    .hero {
+      min-height: 100svh; display: grid; align-items: center;
+      padding: 6rem 0 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-grid {
+      display: grid; gap: 2.5rem; align-items: center;
+    }
+    .hero-badge {
+      display: inline-block; font-size: .75rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--sage-dark);
+      margin-bottom: 1rem;
+      opacity: 0; animation: rise .8s var(--ease) .1s forwards;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 7vw, 4.5rem);
+      font-weight: 600; line-height: 1.05; letter-spacing: -.02em;
+      margin-bottom: 1.25rem;
+      opacity: 0; animation: rise .9s var(--ease) .25s forwards;
+    }
+    .hero h1 span { color: var(--sage-dark); font-style: italic; }
+    .hero-sub {
+      font-size: 1.1rem; color: var(--muted); max-width: 460px; margin-bottom: 2rem;
+      opacity: 0; animation: rise .8s var(--ease) .45s forwards;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: .75rem;
+      opacity: 0; animation: rise .8s var(--ease) .6s forwards;
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .95rem 1.6rem; border-radius: 999px; font-weight: 500; font-size: .95rem;
+      border: none; cursor: pointer; transition: transform .25s, box-shadow .25s;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+      color: #fff; box-shadow: 0 12px 32px rgba(107, 122, 94, .25);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(107, 122, 94, .3); }
+    .btn-outline {
+      background: transparent; border: 1.5px solid var(--text); color: var(--text);
+    }
+    .btn-outline:hover { background: var(--text); color: var(--cream); }
+
+    .hero-visual {
+      position: relative; border-radius: var(--radius); overflow: hidden;
+      aspect-ratio: 4/5; max-height: 580px;
+      opacity: 0; animation: rise 1s var(--ease) .5s forwards;
+      box-shadow: 0 40px 80px rgba(44, 40, 37, .12);
+    }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-visual::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(44,40,37,.15) 100%);
+    }
+    .float-card {
+      position: absolute; bottom: 1.5rem; left: 1.5rem; right: 1.5rem;
+      background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+      padding: 1rem 1.25rem; border-radius: 16px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .85rem;
+    }
+    .float-card strong { display: block; font-size: 1rem; }
+
+    /* Marquee */
+    .marquee-wrap {
+      background: var(--blush); padding: 1.25rem 0; overflow: hidden;
+      border-block: 1px solid rgba(44,40,37,.06);
+    }
+    .marquee {
+      display: flex; gap: 3rem; width: max-content;
+      animation: scroll 32s linear infinite;
+    }
+    .marquee span {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.35rem;
+      color: var(--muted); white-space: nowrap;
+    }
+    .marquee span em { color: var(--gold); font-style: normal; }
+    @keyframes scroll { to { transform: translateX(-50%); } }
+
+    section { padding: 5rem 0; }
+    .section-head { text-align: center; margin-bottom: 3rem; }
+    .section-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; margin-bottom: .5rem;
+    }
+    .section-head p { color: var(--muted); max-width: 480px; margin: 0 auto; }
+
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Services */
+    .services-grid {
+      display: grid; gap: 1.25rem;
+      grid-template-columns: 1fr;
+    }
+    .service-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 2rem; border: 1px solid rgba(44,40,37,.06);
+      transition: transform .35s var(--ease), box-shadow .35s;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(44,40,37,.08);
+    }
+    .service-card .icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: var(--blush); display: grid; place-items: center;
+      font-size: 1.3rem; margin-bottom: 1rem;
+    }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; margin-bottom: .35rem;
+    }
+    .service-card p { font-size: .9rem; color: var(--muted); margin-bottom: 1rem; }
+    .price-tag {
+      font-size: .85rem; font-weight: 500; color: var(--sage-dark);
+      padding: .35rem .75rem; background: var(--cream); border-radius: 999px;
+      display: inline-block;
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem;
+    }
+    .gallery .g-item {
+      border-radius: 16px; overflow: hidden; aspect-ratio: 1;
+      transition: transform .5s var(--ease);
+    }
+    .gallery .g-item:hover { transform: scale(1.02); }
+    .gallery .g-item img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery .g-item.wide { grid-column: span 2; aspect-ratio: 21/9; }
+
+    /* Why */
+    .why-block {
+      background: var(--white); border-radius: calc(var(--radius) + 8px);
+      padding: 3rem 2rem; text-align: center;
+      border: 1px solid rgba(44,40,37,.06);
+    }
+    .why-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 4vw, 2.2rem); font-style: italic;
+      line-height: 1.4; max-width: 640px; margin: 0 auto 1.5rem;
+      color: var(--text);
+    }
+    .why-block cite { font-size: .9rem; color: var(--muted); font-style: normal; }
+    .why-pills {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem;
+      margin-top: 2rem;
+    }
+    .why-pills span {
+      padding: .5rem 1rem; border-radius: 999px;
+      background: var(--cream); font-size: .85rem; color: var(--muted);
+    }
+
+    /* Visit */
+    .visit {
+      display: grid; gap: 2rem; align-items: start;
+    }
+    .visit-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 2rem; border: 1px solid rgba(44,40,37,.06);
+    }
+    .visit-card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; margin-bottom: 1rem;
+    }
+    .visit-card address { font-style: normal; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
+    .hours { font-size: .9rem; color: var(--sage-dark); font-weight: 500; margin-bottom: 1.5rem; }
+    .contact-links { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+    footer {
+      padding: 2rem 0 5.5rem; text-align: center;
+      color: var(--muted); font-size: .85rem;
+      border-top: 1px solid rgba(44,40,37,.08);
+    }
+
+    .sticky-cta {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
+      padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
+      background: rgba(250,247,242,.95); backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(44,40,37,.08);
+      display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;
+    }
+    .sticky-cta a {
+      text-align: center; padding: .85rem; border-radius: 14px;
+      font-weight: 500; font-size: .9rem;
+    }
+    .sticky-cta .book { background: var(--sage-dark); color: #fff; }
+    .sticky-cta .email { background: var(--blush); color: var(--text); }
+
+    @media (min-width: 768px) {
+      .sticky-cta { display: none; }
+      .nav-links { display: flex; }
+      .hero-grid { grid-template-columns: 1fr 1fr; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery { grid-template-columns: repeat(4, 1fr); }
+      .gallery .g-item.wide { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+      .visit { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, .marquee { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+      .hero-badge, .hero h1, .hero-sub, .hero-actions, .hero-visual { opacity: 1; animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo">Shear <em>Genius</em></a>
+      <nav class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#visit">Visit</a>
+      </nav>
+      <a href="#book" class="nav-cta">Book Now</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="hero-badge">Unisex Salon · Subhash Road, Dehradun</span>
+        <h1>Shear Genius: Your Premier <span>Unisex Salon</span> in Dehradun</h1>
+        <p class="hero-sub">Experience excellence in hair &amp; beauty on Subhash Road · Hair · Beauty · Quality Products</p>
+        <div class="hero-actions" id="book">
+          <a href="mailto:info@sheargenius.co.in?subject=Appointment%20Request" class="btn btn-primary">Book an Appointment</a>
+          <a href="mailto:info@sheargenius.co.in" class="btn btn-outline">Email Us</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&q=80&auto=format&fit=crop" alt="Salon interior" width="900" height="1125">
+        <div class="float-card">
+          <div><strong>Mon–Sat 9am–9pm</strong>Subhash Road · Near MKP College</div>
+          <span style="color:var(--gold)">★</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee">
+      <span>Hair Styling <em>·</em></span>
+      <span>Hair Color <em>·</em></span>
+      <span>Facials &amp; Skin <em>·</em></span>
+      <span>Bridal Makeup <em>·</em></span>
+      <span>Nails &amp; Manicure <em>·</em></span>
+      <span>Unisex Salon <em>·</em></span>
+      <span>Hair Styling <em>·</em></span>
+      <span>Hair Color <em>·</em></span>
+      <span>Facials &amp; Skin <em>·</em></span>
+      <span>Bridal Makeup <em>·</em></span>
+      <span>Nails &amp; Manicure <em>·</em></span>
+      <span>Unisex Salon <em>·</em></span>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Our Services</h2>
+        <p>Full-service hair &amp; beauty — excellent service, quality products, and an atmosphere you'll enjoy.</p>
+      </div>
+      <div class="services-grid">
+        <article class="service-card reveal">
+          <div class="icon">✂️</div>
+          <h3>Haircut &amp; Styling</h3>
+          <p>Precision cuts and styling for men and women — from everyday looks to special occasions.</p>
+          <span class="price-tag">From ₹299 · Book for exact pricing</span>
+        </article>
+        <article class="service-card reveal">
+          <div class="icon">🎨</div>
+          <h3>Hair Color &amp; Treatment</h3>
+          <p>Highlights, global color, keratin, and nourishing treatments with quality products.</p>
+          <span class="price-tag">From ₹999 · Consultation included</span>
+        </article>
+        <article class="service-card reveal">
+          <div class="icon">✨</div>
+          <h3>Facials &amp; Skin Care</h3>
+          <p>Rejuvenating facials and skin treatments tailored to your skin type.</p>
+          <span class="price-tag">From ₹699</span>
+        </article>
+        <article class="service-card reveal">
+          <div class="icon">💍</div>
+          <h3>Bridal &amp; Makeup</h3>
+          <p>Bridal packages and professional makeup for weddings and celebrations in Dehradun.</p>
+          <span class="price-tag">Packages available</span>
+        </article>
+        <article class="service-card reveal">
+          <div class="icon">💅</div>
+          <h3>Nails &amp; Manicure</h3>
+          <p>Manicure, pedicure, and nail art in a relaxed, professional setting.</p>
+          <span class="price-tag">From ₹399</span>
+        </article>
+        <article class="service-card reveal">
+          <div class="icon">🧴</div>
+          <h3>Beauty Services</h3>
+          <p>Waxing, threading, and grooming — complete unisex beauty care under one roof.</p>
+          <span class="price-tag">View menu when booking</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Inside Shear Genius</h2>
+        <p>A welcoming space dedicated to your satisfaction.</p>
+      </div>
+      <div class="gallery reveal">
+        <div class="g-item wide">
+          <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=1200&q=80&auto=format&fit=crop" alt="Hair styling" loading="lazy">
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80&auto=format&fit=crop" alt="Beauty treatment" loading="lazy">
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb04d?w=600&q=80&auto=format&fit=crop" alt="Salon ambiance" loading="lazy">
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=600&q=80&auto=format&fit=crop" alt="Hair color" loading="lazy">
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=80&auto=format&fit=crop" alt="Spa care" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="why-block reveal">
+        <blockquote>"Dedicated to consistently providing high customer satisfaction — excellent service, quality products, and an enjoyable atmosphere."</blockquote>
+        <cite>— The Shear Genius promise · Dehradun</cite>
+        <div class="why-pills">
+          <span>Professional stylists</span>
+          <span>Quality products</span>
+          <span>Unisex welcome</span>
+          <span>Online booking ready</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visit">
+    <div class="wrap visit">
+      <div class="visit-card reveal">
+        <h2>Visit Us</h2>
+        <address>
+          56 Subhash Road Near MKP college<br>
+          near The Heritage School<br>
+          Dehradun, Uttarakhand 248001
+        </address>
+        <p class="hours">Mon–Sat · 9am – 9pm · Sunday Closed</p>
+        <div class="contact-links">
+          <a href="mailto:info@sheargenius.co.in?subject=Appointment%20Request" class="btn btn-primary">Book an Appointment</a>
+          <a href="https://www.facebook.com/ShearGeniusIndia" class="btn btn-outline" target="_blank" rel="noopener">Facebook</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal" style="max-height:400px;aspect-ratio:4/3;">
+        <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=800&q=80&auto=format&fit=crop" alt="Salon experience" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    Shear Genius Unisex Salon — Dehradun · Subhash Road
+  </footer>
+
+  <div class="sticky-cta">
+    <a href="mailto:info@sheargenius.co.in?subject=Appointment" class="book">Book Now</a>
+    <a href="mailto:info@sheargenius.co.in" class="email">Email</a>
+  </div>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 30), { passive: true });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = `${(i % 5) * 0.07}s`;
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

@@ -10,6 +10,10 @@ local-lead-finder → contact-finder → lead-research → lead-demo-site → pi
 
 `lead-research` is **required** — demo reads `~/.hermes/leads/research/{slug}.json`.
 
+**Category templates (v1.1):**
+- Gym → `templates/gym-modern.html` (Bull's Legacy)
+- Salon → `templates/salon-modern.html` (Shear Genius)
+
 ## Quick start
 
 ```
