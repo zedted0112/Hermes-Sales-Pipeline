@@ -1,0 +1,17 @@
+{
+  "business": "Bull's Legacy Gym",
+  "city": "Dehradun",
+  "category": "Gym",
+  "slug": "bulls-legacy-gym",
+  "demo_path": "~/.hermes/leads/demos/bulls-legacy-gym/index.html",
+  "generated_at": "2026-06-15T20:30:00+05:30",
+  "lead_source": "lead-research",
+  "research_path": "~/.hermes/leads/research/bulls-legacy-gym.json",
+  "issues_addressed_in_demo": [
+    "No website — full preview site built",
+    "No online booking — Book Free Trial CTA prominent",
+    "No social — gallery + community section"
+  ],
+  "preview_command": "open ~/.hermes/leads/demos/bulls-legacy-gym/index.html",
+  "pitch_hook": "I put together a quick preview of what Bull's Legacy could look like online — want to see it?"
+}

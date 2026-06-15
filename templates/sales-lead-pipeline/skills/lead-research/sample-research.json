@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "business": "Bull's Legacy Gym",
+    "city": "Dehradun",
+    "category": "Gym",
+    "slug": "bulls-legacy-gym",
+    "researched_at": "2026-06-15T21:00:00+05:30",
+    "research_version": "1.0"
+  },
+  "identity": {
+    "display_name": "Bull's legacy | Unisex Gym",
+    "tagline": null,
+    "owner_name": null,
+    "year_established": null,
+    "business_type": "unisex gym"
+  },
+  "location": {
+    "address": "2 Keshav Road, Kanwali Road, near Laxman Police Chowki",
+    "area": "Kanwali Road",
+    "city": "Dehradun",
+    "state": "Uttarakhand",
+    "pin": "248001",
+    "landmark": "near Laxman Police Chowki"
+  },
+  "contact": {
+    "phone": "+919759816924",
+    "whatsapp": null,
+    "email": null,
+    "website": null,
+    "instagram": null,
+    "facebook": null,
+    "recommended_channel": "phone"
+  },
+  "offerings": {
+    "services": ["Weight training", "Cardio equipment", "Personal training"],
+    "products": [],
+    "price_hints": [],
+    "hours": null
+  },
+  "brand_signals": {
+    "vibe": ["local", "neighborhood", "unisex", "no dedicated web presence"],
+    "tone_words": ["strong", "legacy", "community"],
+    "colors_observed": [],
+    "competitor_context": "Kanwali Road area has multiple fitness options"
+  },
+  "reviews": {
+    "google_count": 35,
+    "rating": null,
+    "sample_quotes": []
+  },
+  "gaps": {
+    "from_lead_finder": [
+      "No website",
+      "No online booking",
+      "No social media presence"
+    ],
+    "demo_should_highlight": [
+      "Book Free Trial CTA",
+      "Sticky phone/WhatsApp bar",
+      "Programs and trainers section",
+      "Location block with real address"
+    ]
+  },
+  "content_for_ui": {
+    "hero_headline": "Bull's Legacy — Train Hard in Dehradun",
+    "hero_subhead": "Unisex gym on Kanwali Road • Strength • Cardio • Personal training",
+    "cta_primary": "Book Free Trial",
+    "cta_secondary": "Call Now",
+    "sections": [
+      {
+        "id": "programs",
+        "title": "Training Programs",
+        "items": ["Strength & conditioning", "Cardio zone", "Personal training sessions"]
+      },
+      {
+        "id": "why-us",
+        "title": "Why Bull's Legacy",
+        "items": ["Local Kanwali Road gym", "Unisex training space", "Community-focused fitness"]
+      },
+      {
+        "id": "location",
+        "title": "Find Us",
+        "body": "2 Keshav Road, Kanwali Road, near Laxman Police Chowki, Dehradun 248001"
+      }
+    ],
+    "footer_tagline": "Bull's Legacy Gym — Dehradun"
+  },
+  "media": {
+    "logo_url": null,
+    "image_urls": [],
+    "image_keywords": ["indian gym training", "fitness center interior", "dehradun gym"]
+  },
+  "sources": [
+    {"type": "lead-finder", "fields_used": ["address", "issues", "google_review_count"]},
+    {"type": "contact-finder", "fields_used": ["phone"]},
+    {"type": "joonsquare", "fields_used": ["phone"]}
+  ],
+  "confidence": "medium"
+}

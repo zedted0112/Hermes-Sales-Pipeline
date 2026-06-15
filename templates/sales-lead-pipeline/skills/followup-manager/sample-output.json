@@ -1,0 +1,15 @@
+{
+  "business": "Bull's Legacy Gym",
+  "sequence_day": 3,
+  "channel": "whatsapp",
+  "recipient": "+919876543210",
+  "body": "Hi again! Just floating this back up — happy to do a quick free audit of your gym's online presence whenever works. No pressure 🙂\n— Nitin",
+  "status": "pending_approval",
+  "next_followup_at": "2026-06-18",
+  "sequence": [
+    {"day": 0, "type": "initial", "status": "sent", "sent_at": "2026-06-15"},
+    {"day": 3, "type": "friendly_nudge", "status": "pending_approval"},
+    {"day": 7, "type": "value_add", "status": "scheduled"},
+    {"day": 14, "type": "final_close", "status": "scheduled"}
+  ]
+}

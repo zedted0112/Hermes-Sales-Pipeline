@@ -1,0 +1,33 @@
+{
+  "id": "{slug}",
+  "business": "{business_name}",
+  "city": "{city}",
+  "category": "{category}",
+  "status": "new",
+  "opportunity_score": null,
+  "issues_found": [],
+  "suggested_services": [],
+  "contact": {
+    "website": null,
+    "email": null,
+    "phone": null,
+    "whatsapp": null,
+    "instagram": null,
+    "recommended_channel": null
+  },
+  "assets": {
+    "research_path": "~/.hermes/leads/research/{slug}.json",
+    "demo_path": "~/.hermes/leads/demos/{slug}/index.html"
+  },
+  "outreach": {
+    "last_pitch_at": null,
+    "last_channel": null,
+    "next_followup_at": null,
+    "sequence_day": 0
+  },
+  "history": [
+    {"at": "{iso_timestamp}", "event": "lead_created", "source": "local-lead-finder"}
+  ],
+  "created_at": "{iso_timestamp}",
+  "updated_at": "{iso_timestamp}"
+}

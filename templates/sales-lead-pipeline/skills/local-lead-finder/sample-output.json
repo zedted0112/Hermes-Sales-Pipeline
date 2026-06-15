@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "city": "Dehradun",
+    "category": "Gym",
+    "generated_at": "2026-06-15T10:30:00+05:30",
+    "lead_count": 3
+  },
+  "leads": [
+    {
+      "business_name": "XYZ Gym",
+      "address": "Rajpur Road, Dehradun",
+      "opportunity_score": 9,
+      "issues_found": [
+        "No website",
+        "No online booking",
+        "Inactive Instagram"
+      ],
+      "suggested_services": [
+        "Website",
+        "WhatsApp Booking",
+        "Social Media Setup"
+      ],
+      "reason": "Business appears to have low digital presence and would benefit from an online customer acquisition system.",
+      "signals": {
+        "has_website": false,
+        "website_outdated": false,
+        "has_online_booking": false,
+        "has_whatsapp": false,
+        "social_active": false,
+        "google_review_count": 12
+      },
+      "score_breakdown": {
+        "no_website": 5,
+        "no_online_booking": 2,
+        "inactive_social_media": 2
+      }
+    },
+    {
+      "business_name": "FitZone Dehradun",
+      "address": "Clement Town, Dehradun",
+      "opportunity_score": 7,
+      "issues_found": [
+        "Website looks outdated",
+        "No online booking",
+        "No WhatsApp contact"
+      ],
+      "suggested_services": [
+        "Website redesign",
+        "Online booking",
+        "WhatsApp Business setup"
+      ],
+      "reason": "Has a basic website from 2019 with no mobile layout and no way to book or message online; easy win for a digital refresh package.",
+      "signals": {
+        "has_website": true,
+        "website_outdated": true,
+        "has_online_booking": false,
+        "has_whatsapp": false,
+        "social_active": true,
+        "google_review_count": 34
+      },
+      "score_breakdown": {
+        "website_outdated": 3,
+        "no_online_booking": 2,
+        "no_whatsapp_contact": 2
+      }
+    },
+    {
+      "business_name": "Iron House Gym",
+      "address": "Dharampur, Dehradun",
+      "opportunity_score": 3,
+      "issues_found": [
+        "Low Google review count"
+      ],
+      "suggested_services": [
+        "Google Business Profile optimization"
+      ],
+      "reason": "Solid website and active Instagram, but only 8 Google reviews — reputation management could help them compete locally.",
+      "signals": {
+        "has_website": true,
+        "website_outdated": false,
+        "has_online_booking": true,
+        "has_whatsapp": true,
+        "social_active": true,
+        "google_review_count": 8
+      },
+      "score_breakdown": {
+        "low_google_review_count": 1
+      }
+    }
+  ]
+}

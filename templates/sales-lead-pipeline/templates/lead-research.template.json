@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "business": "{business_name}",
+    "city": "{city}",
+    "category": "{category}",
+    "slug": "{slug}",
+    "researched_at": "{iso_timestamp}",
+    "research_version": "1.0"
+  },
+  "identity": {
+    "display_name": "{business_name}",
+    "tagline": null,
+    "owner_name": null,
+    "year_established": null,
+    "business_type": "{category_lower}"
+  },
+  "location": {
+    "address": null,
+    "area": null,
+    "city": "{city}",
+    "state": null,
+    "pin": null,
+    "landmark": null
+  },
+  "contact": {
+    "phone": null,
+    "whatsapp": null,
+    "email": null,
+    "website": null,
+    "instagram": null,
+    "facebook": null,
+    "recommended_channel": null
+  },
+  "offerings": {
+    "services": [],
+    "products": [],
+    "price_hints": [],
+    "hours": null
+  },
+  "brand_signals": {
+    "vibe": [],
+    "tone_words": [],
+    "colors_observed": [],
+    "competitor_context": null
+  },
+  "reviews": {
+    "google_count": null,
+    "rating": null,
+    "sample_quotes": []
+  },
+  "gaps": {
+    "from_lead_finder": [],
+    "demo_should_highlight": ["Book CTA", "WhatsApp bar", "Services section"]
+  },
+  "content_for_ui": {
+    "hero_headline": "{business_name} — {city}",
+    "hero_subhead": "{category} in {city}",
+    "cta_primary": "Book Appointment",
+    "cta_secondary": "WhatsApp Now",
+    "sections": [],
+    "footer_tagline": "{business_name} — {city}"
+  },
+  "media": {
+    "logo_url": null,
+    "image_urls": [],
+    "image_keywords": ["{category_lower} interior", "{city}"]
+  },
+  "sources": [],
+  "confidence": "low"
+}

@@ -1,0 +1,19 @@
+{
+  "business": "Bull's Legacy Gym",
+  "channel": "whatsapp",
+  "recipient": "+919876543210",
+  "subject": null,
+  "body": "Hi Bull's Legacy Team 👋\n\nI came across your gym in Dehradun — great local presence! I noticed you don't have a website or online booking yet.\n\nMany fitness businesses nearby are getting more inquiries through:\n• A simple professional website\n• WhatsApp booking for trial sessions\n• Google visibility improvements\n\nI help gyms set this up. Would you be open to a free 10-min audit?\n\n— Nitin",
+  "sender": "Nitin",
+  "status": "pending_approval",
+  "personalization_used": [
+    "No website",
+    "No online booking",
+    "Strong local presence in Dehradun"
+  ],
+  "services_offered": [
+    "Professional Website",
+    "WhatsApp Booking",
+    "Google Business Optimization"
+  ]
+}

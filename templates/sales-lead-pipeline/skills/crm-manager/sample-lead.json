@@ -1,0 +1,33 @@
+{
+  "id": "bulls-legacy-gym",
+  "business": "Bull's Legacy Gym",
+  "city": "Dehradun",
+  "category": "Gym",
+  "status": "new",
+  "opportunity_score": 9,
+  "issues_found": ["No website", "No online booking", "Inactive Instagram"],
+  "suggested_services": ["Website", "WhatsApp Booking", "Social Media Setup"],
+  "contact": {
+    "website": null,
+    "email": null,
+    "phone": "+919876543210",
+    "whatsapp": "+919876543210",
+    "instagram": "https://instagram.com/bullslegacygym",
+    "facebook": "https://facebook.com/bullslegacygym",
+    "contact_form": null,
+    "recommended_channel": "whatsapp"
+  },
+  "outreach": {
+    "last_pitch_at": null,
+    "last_channel": null,
+    "next_followup_at": null,
+    "sequence_day": 0,
+    "demo_path": null
+  },
+  "history": [
+    {"at": "2026-06-15T10:00:00+05:30", "event": "lead_created", "source": "local-lead-finder"},
+    {"at": "2026-06-15T10:15:00+05:30", "event": "contact_enriched", "source": "contact-finder"}
+  ],
+  "created_at": "2026-06-15T10:00:00+05:30",
+  "updated_at": "2026-06-15T10:15:00+05:30"
+}
