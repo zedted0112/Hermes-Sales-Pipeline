@@ -58,6 +58,19 @@ def create_default_registry() -> ToolRegistry:
 
     registry.register(
         ToolSpec(
+            name="list_files",
+            description="List files and directories under a project path.",
+            parameters={
+                "type": "object",
+                "properties": {"path": {"type": "string", "description": "Relative path"}},
+                "required": ["path"],
+            },
+        ),
+        lambda path, **_: builtin.list_files(path),
+    )
+
+    registry.register(
+        ToolSpec(
             name="system_info",
             description="Return Python version, platform, and project root.",
             parameters={"type": "object", "properties": {}},

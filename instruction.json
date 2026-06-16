@@ -1,64 +1,255 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "schema": "hermes-watcher-instructions",
-  "purpose": "Tell Hermes how to interpret Report.json when the file watcher fires a Telegram alert.",
+  "purpose": "Tell Hermes how to interpret Report.json + goal.md when the file watcher fires a Telegram alert.",
   "project_root": "/Users/himalayancoder/DevSpace/Projects/cheetclaw/hermes agent",
+  "sources": {
+    "report": "Report.json",
+    "goal": "goal.md",
+    "instructions": "instruction.json"
+  },
   "watch_targets": [
     {
       "file": "Report.json",
       "role": "primary",
-      "description": "Live project status, folder map, changes, and alerts"
+      "description": "Live project status, changes, health, current phase"
+    },
+    {
+      "file": "goal.md",
+      "role": "roadmap",
+      "description": "Project vision and phased roadmap \u2014 source of truth for next steps"
     },
     {
       "file": "instruction.json",
       "role": "meta",
-      "description": "This file — interpretation rules for the agent"
+      "description": "This file \u2014 interpretation rules for the agent"
     }
   ],
-  "on_file_change": {
-    "trigger": "Report.json mtime changed (hermes cron watch-report-json)",
+  "roadmap": {
+    "source": "goal.md",
+    "current_phase": "1.1",
+    "phases": [
+      {
+        "id": "1.0",
+        "title": "Scaffold + chat loop",
+        "description": "Chat UI, agent loop, Report.json, Telegram watcher",
+        "status": "done"
+      },
+      {
+        "id": "1.1",
+        "title": "list_files tool",
+        "description": "Agent can list files/dirs in any project path (sandboxed)",
+        "status": "in_progress"
+      },
+      {
+        "id": "1.2",
+        "title": "read_file tool",
+        "description": "Agent can read text files with max size guard",
+        "status": "pending"
+      },
+      {
+        "id": "1.3",
+        "title": "Prompt + tool routing",
+        "description": "System prompt teaches when to list vs read vs chat",
+        "status": "pending"
+      },
+      {
+        "id": "1.4",
+        "title": "Smoke tests",
+        "description": "Chat: \"list src/\", \"read main.py\" \u2014 verify tool use",
+        "status": "pending"
+      },
+      {
+        "id": "2.1",
+        "title": "Error handling",
+        "description": "Clear tool errors surfaced to user in chat",
+        "status": "pending"
+      },
+      {
+        "id": "2.2",
+        "title": "Session memory",
+        "description": "Remember last N turns across chat session",
+        "status": "pending"
+      },
+      {
+        "id": "2.3",
+        "title": "Report sync",
+        "description": "`update_report` sets `current_phase` from goal.md",
+        "status": "pending"
+      },
+      {
+        "id": "3.1",
+        "title": "Write file tool",
+        "description": "Agent can propose/save file edits (with guardrails)",
+        "status": "pending"
+      },
+      {
+        "id": "3.2",
+        "title": "Custom tools dir",
+        "description": "Load tools from `tools/custom/` dynamically",
+        "status": "pending"
+      },
+      {
+        "id": "3.3",
+        "title": "Hermes gateway bridge",
+        "description": "Optional: same agent on Telegram natively",
+        "status": "pending"
+      }
+    ],
+    "last_synced_at": "2026-06-15T16:57:52+05:30",
+    "last_synced_by": "hermes-cron-agent"
+  },
+  "next_steps": [
+    {
+      "phase": "1.1",
+      "step": "Implement list_files in src/hermes_app/tools/builtin.py",
+      "status": "in_progress"
+    },
+    {
+      "phase": "1.1",
+      "step": "Register list_files in create_default_registry()",
+      "status": "pending"
+    },
+    {
+      "phase": "1.1",
+      "step": "Test in chat: 'list files in src/hermes_app'",
+      "status": "pending"
+    }
+  ],
+  "on_user_telegram_reply": {
+    "triggers": [
+      "pick 1",
+      "pick 2",
+      "pick 3",
+      "phase",
+      "priority",
+      "focus on",
+      "instead"
+    ],
     "workflow": [
-      "1. Read instruction.json (this file)",
-      "2. Read Report.json from project_root",
-      "3. Compare changes.since_last_report and changes.change_type",
-      "4. Check status.health, status.blockers, and alerts array",
-      "5. Send a concise Telegram summary to the user"
+      "1. Read instruction.json proposed_next_steps / outbound_telegram.pick_options",
+      "2. Run: python3 scripts/apply_user_choice.py \"<user message>\"",
+      "3. Confirm updated phase and next_steps to user",
+      "4. Report.json may update \u2014 watcher will send summary on next tick"
+    ],
+    "examples": {
+      "pick 1": "Continue current phase from goal.md",
+      "pick 2": "Jump to next phase from goal.md",
+      "focus on read_file first": "Custom priority \u2014 updates next_steps in instruction.json"
+    }
+  },
+  "on_file_change": {
+    "trigger": "Report.json content changed (hermes cron watch-report-json)",
+    "owner": "hermes-cron-agent",
+    "workflow": [
+      "1. Read Report.json, goal.md, instruction.json",
+      "2. Run: python3 scripts/sync_instruction.py (Hermes updates instruction.json \u2014 NOT Cursor)",
+      "3. Verify instruction.json hermes_self_maintenance.updated_by == hermes-cron-agent",
+      "4. Summarize Report.changes.since_last_report (last 3 items)",
+      "5. Telegram: headline, changes, Phase X.Y status, next step from instruction.json"
     ],
     "telegram_format": {
-      "style": "short, scannable, emoji headers optional",
+      "style": "short, scannable",
       "sections": [
-        "Headline — one line from Report.summary",
-        "What changed — bullet list from changes.since_last_report",
-        "Status — health + any blockers",
-        "Next — top item from status.next_steps if relevant"
+        "Headline \u2014 Report.summary",
+        "What changed \u2014 changes.since_last_report (last 3 items)",
+        "Status \u2014 health, current_phase from roadmap",
+        "Next step \u2014 one item from next_steps matching current_phase (e.g. Phase 1.1: Add list_files tool\u2026)"
       ],
       "max_words": 400,
-      "example": "📋 Project update\\n\\nScaffold complete — agentic app structure is ready.\\n\\nChanges:\\n• Added orchestrator, tools, memory modules\\n• Config and SOUL.md in place\\n\\nStatus: ok — no blockers."
+      "example": "Project update\n\nChat loop active \u2014 user greeted agent.\n\nChanges:\n\u2022 User said hi\n\u2022 Report updated\n\nStatus: ok | Phase 1.1 (in progress)\n\nNext: Phase 1.1 \u2014 Add list_files tool in builtin.py"
     }
   },
   "field_reference": {
-    "Report.summary": "Human-readable headline — use as opening line",
-    "Report.changes.since_last_report": "List of changes since last update — main body",
-    "Report.changes.change_type": "Category: initial_scaffold | feature | fix | deploy | alert",
-    "Report.status.health": "ok | degraded | error",
-    "Report.status.blockers": "Issues preventing progress — mention if non-empty",
-    "Report.alerts": "Urgent items — always mention if non-empty",
-    "Report.folder_structure": "Reference only — do not dump full tree unless user asks",
-    "Report.components": "Module status map — mention if a component status changed"
+    "Report.summary": "Headline for Telegram",
+    "Report.changes.since_last_report": "What changed \u2014 main body",
+    "Report.status.current_phase": "Should match roadmap.current_phase",
+    "roadmap.current_phase": "Active phase id from goal.md (e.g. 1.1)",
+    "next_steps": "Phased tasks \u2014 always include current phase step in Telegram",
+    "goal.md": "Full vision and phase table \u2014 read for context, do not dump entire file"
   },
   "update_protocol": {
-    "when_you_change_the_project": [
-      "Edit Report.json: append to changes.since_last_report",
-      "Set changes.change_type and changes.last_change_at (ISO 8601 UTC)",
-      "Refresh project.updated_at",
-      "Update summary to reflect current state",
-      "Run: python scripts/sync_report.py (optional — refreshes folder tree)"
+    "owner": "hermes-cron-agent only",
+    "never_edit_via": [
+      "cursor",
+      "human manual edit unless emergency"
     ],
-    "watcher_will": "Detect Report.json save → cron runs → Hermes reads both files → Telegram summary"
+    "on_every_report_change": [
+      "Hermes cron runs scripts/sync_instruction.py",
+      "instruction.json roadmap.current_phase syncs from Report.json",
+      "next_steps syncs from Report.status.next_steps when present",
+      "roadmap.phases statuses auto-updated (done / in_progress / pending)"
+    ],
+    "when_phase_completes": [
+      "Chat agent or dev updates Report.json status.current_phase",
+      "Next cron tick: Hermes syncs instruction.json automatically"
+    ],
+    "watcher_will": "Report.json save \u2192 cron agent \u2192 sync instruction.json \u2192 Telegram"
+  },
+  "hermes_self_maintenance": {
+    "updated_at": "2026-06-15T16:57:52+05:30",
+    "updated_by": "hermes-cron-agent",
+    "source_files": [
+      "Report.json",
+      "goal.md"
+    ],
+    "goal_phases_parsed": 11
   },
   "agent_mode": {
     "enabled": true,
     "cron_job": "watch-report-json",
-    "prompt_hint": "Report.json was updated. Follow instruction.json. Read both files from project_root and send the user a Telegram-friendly summary of what changed."
+    "prompt_hint": "Report.json changed. YOU must update instruction.json: run python3 scripts/sync_instruction.py from project root, then send Telegram summary with phase and next step. Do not ask the user to edit instruction.json."
+  },
+  "user_input": {
+    "last_directive": "Continue Phase 1.1: list_files tool",
+    "last_directive_at": "2026-06-14T00:04:56+05:30",
+    "selected_pick": 1,
+    "custom_steps_locked": true,
+    "selected_phase": "1.1"
+  },
+  "proposed_next_steps": [
+    {
+      "pick": 1,
+      "phase": "1.1",
+      "label": "Continue Phase 1.1: list_files tool",
+      "description": "Agent can list files/dirs in any project path (sandboxed)"
+    },
+    {
+      "pick": 2,
+      "phase": "1.2",
+      "label": "Jump to Phase 1.2: read_file tool",
+      "description": "Agent can read text files with max size guard"
+    },
+    {
+      "pick": 3,
+      "phase": null,
+      "label": "Your own priority \u2014 reply with free text",
+      "description": "Tell me what you want to focus on; I'll update instruction.json"
+    }
+  ],
+  "outbound_telegram": {
+    "generated_at": "2026-06-15T16:57:52+05:30",
+    "body": "Project update\n\nPhase 1.1 complete: list_files tool implemented and tested.\n\nWhat changed:\n  \u2022 User selected pick 1: Continue Phase 1.1: list_files tool\n  \u2022 Added and tested the list_files tool.\n  \u2022 User said hi.\n\nGoal \u2014 Phase 1.1: list_files tool\n  Agent can list files/dirs in any project path (sandboxed)\n\nRecommended next (from goal.md):\n  1. Continue Phase 1.1: list_files tool\n  2. Jump to Phase 1.2: read_file tool\n\nYour call \u2014 reply on Telegram:\n  pick 1  \u2192 continue current phase\n  pick 2  \u2192 jump to next phase\n  or type your own priority (e.g. 'focus on read_file first')\n\nYour last choice: Continue Phase 1.1: list_files tool",
+    "pick_options": [
+      {
+        "pick": 1,
+        "phase": "1.1",
+        "label": "Continue Phase 1.1: list_files tool",
+        "description": "Agent can list files/dirs in any project path (sandboxed)"
+      },
+      {
+        "pick": 2,
+        "phase": "1.2",
+        "label": "Jump to Phase 1.2: read_file tool",
+        "description": "Agent can read text files with max size guard"
+      },
+      {
+        "pick": 3,
+        "phase": null,
+        "label": "Your own priority \u2014 reply with free text",
+        "description": "Tell me what you want to focus on; I'll update instruction.json"
+      }
+    ],
+    "reply_hint": "pick 1 | pick 2 | or type your priority"
   }
 }

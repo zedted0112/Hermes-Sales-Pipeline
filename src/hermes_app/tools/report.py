@@ -21,6 +21,7 @@ def update_report(
     summary: str,
     change_note: str,
     change_type: str = "chat",
+    author: str = "hermes-app-agent",
 ) -> ToolResult:
     """Append a change note and refresh summary/timestamps in Report.json."""
     if not summary.strip():
@@ -43,7 +44,7 @@ def update_report(
     changes = report.setdefault("changes", {})
     changes["change_type"] = change_type
     changes["last_change_at"] = ts
-    changes["changed_by"] = "hermes-app-agent"
+    changes["changed_by"] = author
 
     since: list[str] = list(changes.get("since_last_report") or [])
     since.append(change_note.strip())

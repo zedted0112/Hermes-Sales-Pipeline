@@ -72,6 +72,24 @@ def system_info() -> ToolResult:
     )
 
 
+def list_files(path: str) -> ToolResult:
+    """List files and directories under a project path."""
+    target_path = (PROJECT_ROOT / path).resolve()
+    if not str(target_path).startswith(str(PROJECT_ROOT.resolve())):
+        return ToolResult(ok=False, output=None, error="Path must stay inside project root")
+    if not target_path.exists():
+        return ToolResult(ok=False, output=None, error=f"Not found: {path}")
+    if not target_path.is_dir():
+        return ToolResult(ok=False, output=None, error=f"Not a directory: {path}")
+    
+    entries = []
+    for p in sorted(target_path.iterdir()):
+        entry_type = "dir" if p.is_dir() else "file"
+        entries.append({"name": p.name, "type": entry_type})
+        
+    return ToolResult(ok=True, output={"path": path, "entries": entries})
+
+
 def send_telegram(message: str) -> ToolResult:
     """Send a short message via Hermes CLI (requires hermes in PATH)."""
     if not message.strip():

@@ -6,9 +6,14 @@
     "root": "/Users/himalayancoder/DevSpace/Projects/cheetclaw/hermes agent",
     "version": "0.3.0",
     "phase": "agentic_loop",
-    "updated_at": "2026-06-13T23:06:14+05:30"
+    "updated_at": "2026-06-15T13:07:59+05:30"
   },
-  "summary": "User interaction",
+  "summary": "Phase 1.1 complete: list_files tool implemented and tested.",
+  "goal": {
+    "file": "goal.md",
+    "vision": "Chat agent with basic tools: call tools, list files, read files",
+    "current_phase": "1.1"
+  },
   "components": {
     "chat_ui": {
       "path": "web/static/index.html",
@@ -46,25 +51,41 @@
   "changes": {
     "change_type": "chat",
     "since_last_report": [
-      "Added AgentLoop with Gemini tool-calling (agent/loop.py)",
-      "Added update_report tool \u2014 saves Report.json and triggers Telegram watcher",
-      "Built chat UI at http://127.0.0.1:8765 (FastAPI + web/static)",
-      "Agent auto-logs every chat turn \u2014 no manual hermes cron run required",
-      "User said hi and received a warm greeting.",
-      "User greeted the bot"
+      "Set terminal.cwd to project root so Telegram bot loads AGENTS.md",
+      "Added telegram channel_prompt + SOUL.md so bot knows files and scripts",
+      "Bot should run sync_instruction.py / apply_user_choice.py \u2014 not ask for paths",
+      "User custom priority: check if agent can call tools",
+      "User selected pick 1: Continue Phase 1.1: list_files tool",
+      "Added and tested the list_files tool.",
+      "User said hi."
     ],
-    "last_change_at": "2026-06-13T23:06:14+05:30",
-    "changed_by": "hermes-app-agent"
+    "last_change_at": "2026-06-15T13:07:59+05:30",
+    "changed_by": "Hermes"
   },
   "status": {
     "health": "ok",
     "ready_for_development": true,
+    "current_phase": "1.1",
+    "phase_title": "list_files tool",
     "blockers": [],
     "next_steps": [
-      "Run: pip install -r requirements.txt && PYTHONPATH=src python3 -m hermes_app.main chat",
-      "Open http://127.0.0.1:8765 and type hi",
-      "Wait ~1 min for Telegram watcher after agent updates Report.json"
-    ]
+      {
+        "phase": "1.1",
+        "step": "Add list_files tool \u2014 sandboxed directory listing",
+        "status": "in_progress"
+      },
+      {
+        "phase": "1.1",
+        "step": "Register list_files in tool registry",
+        "status": "pending"
+      },
+      {
+        "phase": "1.2",
+        "step": "Add read_file tool with size limit",
+        "status": "pending"
+      }
+    ],
+    "goal_ref": "goal.md"
   },
   "chat_log": {
     "entries": [
@@ -75,18 +96,26 @@
       {
         "at": "2026-06-13T23:06:14+05:30",
         "note": "User greeted the bot"
+      },
+      {
+        "at": "2026-06-14T00:10:49+05:30",
+        "note": "Added and tested the list_files tool."
+      },
+      {
+        "at": "2026-06-15T13:07:59+05:30",
+        "note": "User said hi."
       }
     ],
-    "last_interaction_at": "2026-06-13T23:06:14+05:30"
+    "last_interaction_at": "2026-06-15T13:07:59+05:30"
   },
   "alerts": [],
   "agent_instructions": {
-    "on_watcher_trigger": "Summarize summary and latest chat_log entry if present.",
+    "on_watcher_trigger": "Read goal.md + instruction.json next_steps. Summarize Report changes and include current phase next step.",
     "priority_fields": [
       "summary",
-      "changes.since_last_report",
-      "chat_log",
-      "components.chat_ui"
+      "goal.current_phase",
+      "status.next_steps",
+      "changes.since_last_report"
     ]
   }
 }
