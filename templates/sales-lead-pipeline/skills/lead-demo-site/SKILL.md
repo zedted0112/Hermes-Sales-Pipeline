@@ -73,6 +73,22 @@ Alternative:
 python3 scripts/build_demo.py kashmiri-sons-dehradun
 ```
 
+### Step 2b — Publish to GitHub Pages (optional)
+
+If you want a shareable demo link, run:
+
+```bash
+PUBLISH_DEMO=1 bash scripts/build.sh {slug} {templateKeyIfAny}
+```
+
+Or publish after building:
+
+```bash
+python3 scripts/publish_to_pages.py {slug}
+```
+
+Success = JSON contains `"ok": true` and a `"url"` field.
+
 ### Step 3 — Report
 
 Only after script succeeds:

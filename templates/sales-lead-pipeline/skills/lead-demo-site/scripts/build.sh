@@ -22,3 +22,9 @@ if [[ ! -f "$DEMO_PATH" ]]; then
   exit 1
 fi
 echo "SUCCESS: open $DEMO_PATH"
+
+if [[ "${PUBLISH_DEMO:-}" == "1" ]]; then
+  echo "Publishing demo to GitHub Pages..."
+  PUB="$(python3 "$SKILL_DIR/scripts/publish_to_pages.py" "$SLUG" 2>&1)" || true
+  echo "$PUB"
+fi

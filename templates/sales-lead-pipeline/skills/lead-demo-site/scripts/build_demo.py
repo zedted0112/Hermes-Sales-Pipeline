@@ -9,6 +9,10 @@ Usage:
 Resolves slug from research meta.slug. Writes:
   ~/.hermes/leads/demos/{slug}/index.html
   ~/.hermes/leads/demos/{slug}/meta.json
+
+Optional:
+  --output-dir <path> writes the same structure under <path>/{slug}/
+  --base-url <url> adds meta.demo_url to meta.json
 """
 from __future__ import annotations
 
@@ -1043,9 +1047,10 @@ def build_salon(data: dict, template_name: str = "salon-modern") -> str:
     return fill_template(template, mapping)
 
 
-def write_outputs(data: dict, html: str, template_name: str) -> Path:
+def write_outputs(data: dict, html: str, template_name: str, output_dir: Path | None = None, base_url: str | None = None) -> Path:
     slug = data["meta"]["slug"]
-    out_dir = DEMOS_DIR / slug
+    out_root = output_dir if output_dir else DEMOS_DIR
+    out_dir = out_root / slug
     out_dir.mkdir(parents=True, exist_ok=True)
     html_path = out_dir / "index.html"
     html_path.write_text(html, encoding="utf-8")
@@ -1056,6 +1061,7 @@ def write_outputs(data: dict, html: str, template_name: str) -> Path:
         "template_used": template_name,
         "research_path": str(RESEARCH_DIR / f"{slug}.json"),
         "demo_path": str(html_path),
+        "demo_url": (f"{base_url.rstrip('/')}/demos/{slug}/" if base_url else None),
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "lead_source": "lead-research",
         "preview_command": f"open {html_path}",
@@ -1074,6 +1080,8 @@ def main() -> int:
         choices=["gym-modern", "gym-modern-dark", "salon-modern", "salon-aesthetic", "retail-modern"],
         help="Override automatic template pick",
     )
+    parser.add_argument("--output-dir", help="Write demo into this directory (root).")
+    parser.add_argument("--base-url", help="If set, writes meta.demo_url based on this base URL.")
     args = parser.parse_args()
 
     if not args.slug and not args.research:
@@ -1092,7 +1100,8 @@ def main() -> int:
     else:
         raise SystemExit(f"Unknown template '{template_name}'")
 
-    out = write_outputs(data, html, template_name)
+    output_dir = Path(args.output_dir).expanduser() if args.output_dir else None
+    out = write_outputs(data, html, template_name, output_dir=output_dir, base_url=args.base_url)
     print(json.dumps({"ok": True, "slug": data["meta"]["slug"], "template": template_name, "demo_path": str(out)}))
     return 0
 

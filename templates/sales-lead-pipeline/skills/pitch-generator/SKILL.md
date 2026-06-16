@@ -46,7 +46,7 @@ Turns lead analysis + contact data into **personalized outreach drafts**. Refere
 | Business name | lead-finder |
 | Issues found | lead-finder (`issues_found`, `suggested_services`) |
 | Best channel | contact-finder (`recommended_channel`) |
-| Demo site built | `lead-demo-site` (`meta.json` → `pitch_hook`, `preview_command`) |
+| Demo site built | `lead-demo-site` (`meta.json` → `demo_url` or `preview_command`) |
 | Sender name | Default: **Nitin** (override if user specifies) |
 
 ## Mode override
@@ -65,6 +65,7 @@ Turns lead analysis + contact data into **personalized outreach drafts**. Refere
 - Offer 2–3 concrete services from `suggested_services`
 - Soft CTA: "free audit", "quick chat", "would you be open to..."
 - Match tone to channel (WhatsApp = short; email = slightly formal)
+- If `demo_url` exists in `~/.hermes/leads/demos/{slug}/meta.json`, include it as the demo link.\n+  Otherwise, keep the line generic (“I can share a quick preview link”). Never fabricate URLs.
 
 ### Don't
 
@@ -89,10 +90,16 @@ Many fitness businesses nearby are getting more inquiries through:
 
 I help gyms set this up. Would you be open to a free 10-min audit?
 
-I also put together a quick preview of what your gym could look like online — happy to share if you're interested.
+I also put together a quick preview of what your gym could look like online:
+{{DEMO_LINK_LINE}}
 
 — Nitin
 ```
+
+Where `{{DEMO_LINK_LINE}}` is:
+
+- If `demo_url` exists: `Preview: {demo_url}`
+- Else: `Preview: (I can share a quick preview link if you're interested.)`
 
 ### Instagram DM (shorter)
 
