@@ -17,6 +17,13 @@ Or:
 Find gym leads in Dehradun using local-lead-finder
 ```
 
+If you invoke `/local-lead-finder` with no city/category, Hermes will ask once:
+
+```
+Which city and what business category should I find leads for?
+Reply like: City: Dehradun, Category: Gym
+```
+
 **CLI with skill preloaded:**
 
 ```bash

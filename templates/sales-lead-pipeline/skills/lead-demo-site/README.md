@@ -10,15 +10,17 @@ local-lead-finder → contact-finder → lead-research → lead-demo-site → pi
 
 `lead-research` is **required** — demo reads `~/.hermes/leads/research/{slug}.json`.
 
-**Category templates (v1.1):**
+**Build:** Hermes runs `bash scripts/build.sh {slug}` — do not hand-write HTML or Python in chat.
+
+**Category templates (v1.2):**
 - Gym → `templates/gym-modern.html` (Bull's Legacy)
 - Salon → `templates/salon-modern.html` (Shear Genius)
 
 ## Quick start
 
 ```
-/lead-research Bull's Legacy Gym, Dehradun
-/lead-demo-site bulls-legacy-gym
+/lead-research Om Sports Gym, Dehradun
+/lead-demo-site om-sports-and-fitness-center
 ```
 
 ## Preview
@@ -39,9 +41,10 @@ open ~/.hermes/leads/demos/bulls-legacy-gym/index.html
 ```
 lead-demo-site/
 ├── SKILL.md
-├── README.md
-├── category-briefs.md
-└── sample-meta.json
+├── scripts/build_demo.py   # ← Hermes runs this
+├── templates/
+│   ├── gym-modern.html
+│   └── salon-modern.html
 ```
 
 ## Output location

@@ -1,10 +1,10 @@
 ---
 name: lead-demo-site
 description: >-
-  Build a business-specific UI-only demo website for a sales lead. Runs
-  scripts/build_demo.py from research JSON + gym/salon HTML templates. Requires
-  lead-research.json first.
-version: 1.2.0
+  Build demo website for a sales lead by running scripts/build.sh in terminal.
+  Uses gym/salon/retail HTML templates + lead-research.json. NEVER write HTML or
+  Python in chat — terminal only.
+version: 1.3.0
 author: Hermes Agent
 license: MIT
 triggers:
@@ -19,123 +19,124 @@ metadata:
   hermes:
     tags: [sales, demo, website, landing-page, lead, design]
     category: sales
-    related_skills: [lead-research, local-lead-finder, contact-finder, pitch-generator, claude-design, popular-web-designs, web-animation-design, sketch, crm-manager, sales-outreach]
+    related_skills: [lead-research, local-lead-finder, contact-finder, pitch-generator, crm-manager, sales-outreach]
 ---
 
 # Lead Demo Site
 
-## Name
+## Your only job
 
-`lead-demo-site`
-
-## Purpose
-
-Create a **personalized preview website** from `lead-research.json` + a **locked category template** (gym or salon).
-
-The lead should think: *"This is what MY business could look like online."*
-
-## When to Use
-
-- **After `lead-research`** — requires `~/.hermes/leads/research/{slug}.json`
-- User says `/lead-demo-site om-sports-and-fitness-center`
-
-If research file missing → run **`lead-research` first**.
-
-## Mode override (critical)
-
-- **Run `build_demo.py` via the terminal tool** — this is the only build path for gym/salon
-- **Do NOT** paste Python code, `default_api.write_file`, or f-string templates in chat
-- **Do NOT** hand-write full HTML for gym/salon — the script applies `templates/gym-modern.html` or `templates/salon-modern.html`
-- **Do NOT** read dev project files (`Report.json`, `AGENTS.md`)
-- **Do NOT ask** the user questions — proceed autonomously
-- Resolve slug from research `meta.slug` if user passes a partial name
-
-## Build command (mandatory)
-
-After reading research JSON, run **exactly**:
+Run the build script in the **terminal tool**. Templates + Python already exist on disk.
 
 ```bash
-python3 scripts/build_demo.py {slug}
+bash scripts/build.sh {slug}
 ```
 
-Run from the **skill directory** (`[Skill directory: ...]` in your context), e.g.:
+From skill directory (`[Skill directory: ...]`):
 
 ```bash
-cd ~/.hermes/skills/lead-demo-site && python3 scripts/build_demo.py om-sports-and-fitness-center
+cd ~/.hermes/skills/lead-demo-site && bash scripts/build.sh {slug}
 ```
 
-Or absolute path:
+## STOP — forbidden actions
 
-```bash
-python3 ~/.hermes/skills/lead-demo-site/scripts/build_demo.py {slug}
-```
+| Forbidden | Why |
+|-----------|-----|
+| Pasting Python (`default_api`, `execute_code`, f-strings) in chat | Does not create files |
+| Pasting HTML in chat | Wrong — templates handle layout |
+| `write_file` for `index.html` on gym/salon/retail | Use `build.sh` instead |
+| Saying "I will generate..." without running terminal | Must run script same turn |
 
-**Slug resolution:** partial slugs work (`om-sports-gym` → `om-sports-and-fitness-center.json` if unique).
+**Success = terminal shows** `SUCCESS: open /path/to/index.html` **and** JSON with `"ok": true`.
 
-**Expected stdout:** JSON `{"ok": true, "slug": "...", "template": "gym-modern", "demo_path": "..."}`
+## Prerequisites
 
-If the script exits non-zero, read stderr, fix research JSON or slug, retry once. Only then fall back to manual `write_file`.
-
-## Category templates
-
-| Category | Template | Script picks |
-|----------|----------|--------------|
-| Gym, fitness, sports center | `templates/gym-modern.html` | `gym-modern` |
-| Beauty salon, spa, hair salon | `templates/salon-modern.html` | `salon-modern` |
-
-See `templates/README.md` and `templates/SUBSTITUTION.md` for field mapping.
+1. `~/.hermes/leads/research/{slug}.json` must exist (from `lead-research`)
+2. If missing → run `lead-research` first, then come back
 
 ## Procedure
 
-### Step 0 — Load research
+### Step 1 — Resolve slug
 
-1. Resolve slug (use `meta.slug` from JSON, not a guess)
-2. Read `~/.hermes/leads/research/{slug}.json`
-3. If missing → `lead-research` first
+Read research JSON. Use `meta.slug` exactly (e.g. `kashmiri-sons-dehradun`).
+Partial slugs work: `kashmiri-sons` if unique.
 
-### Step 1 — Run build script
+### Step 2 — Run build (mandatory, same turn)
 
 ```bash
-python3 scripts/build_demo.py {slug}
+bash scripts/build.sh kashmiri-sons-dehradun
 ```
 
-### Step 2 — Verify
+Alternative:
 
-1. Confirm JSON output has `"ok": true`
-2. Confirm files exist:
-   - `~/.hermes/leads/demos/{slug}/index.html`
-   - `~/.hermes/leads/demos/{slug}/meta.json`
-3. Tell Captain: `open ~/.hermes/leads/demos/{slug}/index.html`
+```bash
+python3 scripts/build_demo.py kashmiri-sons-dehradun
+```
 
-Optional: `browser_vision` on the file URL.
+### Step 3 — Report
 
-## Output to Captain
+Only after script succeeds:
 
 ```markdown
-## Demo ready: Om Sports And Fitness Center
+## Demo ready: Kashmiri Sons
 
-**Preview:** open ~/.hermes/leads/demos/om-sports-and-fitness-center/index.html
-
-**Template:** gym-modern (from lead-research.json)
-
-**Next:** `/pitch-generator Om Sports And Fitness Center`
+**Preview:** open ~/.hermes/leads/demos/kashmiri-sons-dehradun/index.html
+**Template:** retail-modern (from build_demo.py)
+**Next:** /pitch-generator Kashmiri Sons
 ```
 
-## Anti-patterns (never do)
+## Category templates (automatic)
 
-- Outputting Python/JS code in chat instead of running `build_demo.py`
-- Using `write_file` for gym/salon when the script is available
-- Building gym/salon layout from scratch
-- Wrong slug (`om-sports-gym` when research slug is `om-sports-and-fitness-center` — script fuzzy-matches)
-- Generic lorem ipsum or placeholder business names
+| Category | Template key | Visual name |
+|----------|--------------|-------------|
+| Gym, fitness, sports | `gym-modern` | Gym Classic — orange app-style |
+| Gym, fitness, sports | `gym-modern-dark` | Gym Modern-Dark — gold ELITE-style |
+| Salon, spa, beauty | `salon-modern` | Salon Classic — soft cream layout |
+| Salon, spa, beauty | `salon-aesthetic` | Salon Aesthetic — newsletter-style layout |
+| Clothing, boutique, retail | `retail-modern` | Retail — boutique storefront |
 
-## Verification rules
+By default the script picks template from `meta.category` in research JSON.
 
-- [ ] `build_demo.py` ran successfully (terminal, not chat code)
-- [ ] `meta.json` has `"built_by": "build_demo.py"` and `"template_used"`
-- [ ] Business name in `<title>` and hero
-- [ ] Saved under `~/.hermes/leads/demos/{slug}/`
+For **gym** leads, if Captain has not picked yet:
 
-## V2
+- Ask once:
+  - **Option 1:** Gym Classic (`gym-modern`)
+  - **Option 2:** Gym Modern-Dark (`gym-modern-dark`)
+- After they answer:
 
-Restaurant/clinic templates, deploy to Vercel.
+```bash
+bash scripts/build.sh {slug} gym-modern
+bash scripts/build.sh {slug} gym-modern-dark
+```
+
+For **salon** leads, if Captain has not picked yet:
+
+- Ask once:  
+  - **Option 1:** Salon Classic (`salon-modern`)  
+  - **Option 2:** Salon Aesthetic (`salon-aesthetic`)
+- After they answer, run:
+
+```bash
+bash scripts/build.sh {slug} salon-modern      # option 1
+bash scripts/build.sh {slug} salon-aesthetic   # option 2
+```
+
+## Mode override
+
+- Do NOT read dev project files
+- Do NOT ask user questions
+- Do NOT end turn until `build.sh` succeeds or fails twice
+
+## If build fails
+
+1. Read stderr
+2. Fix research JSON or slug
+3. Retry `bash scripts/build.sh {slug}` once
+4. If still failing — report error to Captain; do not hand-write HTML
+
+## Verification
+
+- [ ] Terminal ran `build.sh` or `build_demo.py`
+- [ ] Output contains `"ok": true`
+- [ ] `meta.json` has `"built_by": "build_demo.py"`
+- [ ] Tell Captain `open {demo_path}`

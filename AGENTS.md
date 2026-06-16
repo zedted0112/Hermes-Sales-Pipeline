@@ -29,6 +29,8 @@ When user asks for **lead research**, **demo site**, **pitch**, or sales skills:
 → **Stop.** Not a dev project task.
 → Pipeline: `local-lead-finder` → `contact-finder` → **`lead-research`** → `lead-demo-site` → `pitch-generator`
 → Research **before** demo: `~/.hermes/leads/research/{slug}.json`
+→ Demo UI: Hermes runs `bash scripts/build.sh {slug}` (or `build_demo.py`) using templates (`gym-modern`, `salon-modern`, `retail-modern`) — **no hand-written HTML in chat**.
+→ Research save: Hermes runs `python3 scripts/save_research.py {slug}` — **no "saved" without file on disk**.
 → **New skills not recognized?** Run `/reload-skills` in chat (session caches slash commands at start).
 → Do not touch Report.json or instruction.json.
 

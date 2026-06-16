@@ -12,6 +12,8 @@ Hermes **must** start from these files. Do not design gym/salon layouts from scr
 ```
 skill_view(name="lead-demo-site", file_path="templates/gym-modern.html")
 skill_view(name="lead-demo-site", file_path="templates/salon-modern.html")
+skill_view(name="lead-demo-site", file_path="templates/gym-modern-dark.html")
+skill_view(name="lead-demo-site", file_path="templates/retail-modern.html")
 ```
 
 ## Build procedure

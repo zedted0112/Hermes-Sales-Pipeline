@@ -3,8 +3,8 @@ name: lead-research
 description: >-
   Deep research on a sales lead before building a demo website. Gathers business
   identity, services, location, brand signals, reviews, and UI copy from public
-  sources. Outputs lead-research.json for lead-demo-site. No generic guesses.
-version: 1.0.0
+  sources. Saves lead-research.json via scripts/save_research.py (terminal). No generic guesses.
+version: 1.1.0
 author: Hermes Agent
 license: MIT
 triggers:
@@ -54,6 +54,8 @@ Think: mini creative brief + fact sheet written from public data only.
 - **Do NOT** read dev project files (`Report.json`, `AGENTS.md`)
 - **Do NOT invent** owner names, years founded, or prices — use `null` or `"unknown"`
 - **Do NOT stop** because one source failed — combine snippets from multiple sources
+- **Do NOT end turn until research JSON is saved on disk** — run `save_research.py` via terminal
+- **Do NOT** describe saving in chat without running the save script
 - Mark uncertain fields `"confidence": "low"` per field where needed
 
 ## Input
@@ -106,15 +108,32 @@ Fill `content_for_ui` using **only gathered facts**:
 - `sections[]` — 3–5 section titles + bullet content from real offerings
 - `testimonial_snippets` — only paraphrase from real review text; else empty array
 
-### Step 5 — Save output
+### Step 5 — Save output (terminal only)
 
+**You MUST save the file by running the terminal** — not by describing it in chat.
+
+**Option A — write_file then save script:**
+
+1. `write_file` → `~/.hermes/skills/lead-research/drafts/{slug}.json` (full JSON)
+2. Terminal:
+
+```bash
+python3 scripts/save_research.py {slug} --file drafts/{slug}.json
 ```
-~/.hermes/leads/research/{slug}.json
+
+**Option B — pipe JSON via terminal:**
+
+```bash
+python3 scripts/save_research.py {slug} <<'EOF'
+{paste full JSON here}
+EOF
 ```
 
-`slug` = lowercase hyphenated business name (e.g. `bulls-legacy-gym`).
+**Success = stdout:** `{"ok": true, "slug": "...", "research_path": "..."}`
 
-Create directory if missing: `mkdir -p ~/.hermes/leads/research`
+Create directory if needed: `mkdir -p ~/.hermes/leads/research`
+
+Final path: `~/.hermes/leads/research/{slug}.json`
 
 ### Step 6 — Handoff
 
@@ -250,7 +269,7 @@ Before saving:
 1. **Stopping early** — one failed extract ≠ done; try next source
 2. **Generic hero** — "Welcome to the best gym" without business name
 3. **Inventing services** — don't add "CrossFit" unless listed
-4. **Skipping save** — demo site needs the JSON file
+4. **Skipping save** — must run `save_research.py`; saying "saved" without file = failure
 5. **Asking user** — forbidden; use best public data
 
 ## V2 (not in scope)

@@ -60,7 +60,10 @@ When this skill is active:
 - **Do NOT** read `Report.json`, `instruction.json`, `goal.md`, or `AGENTS.md`
 - **Do NOT** run dev scripts or start coding
 - **Do NOT** discuss pick 1/pick 2 or project phases
-- **Do NOT ask the user questions** — no "which result should I explore?", no "do you have a preference?". **Proceed autonomously to the final report.**
+- **Ask only if inputs are missing**:
+  - If the user did **not** provide a clear city and category (or provided only one), you MUST ask exactly one short question to collect both.
+  - After you get the answer, proceed autonomously and do not ask further questions.
+- Otherwise, **do NOT ask the user questions** — no "which result should I explore?", no "do you have a preference?". **Proceed autonomously to the final report.**
 - **First action:** one `web_search` for `"{category} in {city}"` (e.g. `gyms in Dehradun`)
 - **Second action:** `web_extract` on the best directory/listing URL from results (Justdial, Sulekha, datagemba, vfitnessclub, etc.)
 - **Third action:** pick 2 small/local business names from extract or snippets; one `web_search` per business if needed
@@ -76,6 +79,13 @@ Required:
 |-------|---------|
 | City | Dehradun |
 | Business category | Gym |
+
+If missing, ask exactly once in this format (no extra text):
+
+```
+Which city and what business category should I find leads for?
+Reply like: City: Dehradun, Category: Gym
+```
 
 Optional (defaults if omitted):
 

@@ -36,7 +36,7 @@ Orchestrates the full **Captain-approved** sales workflow for local business lea
 1. local-lead-finder     → scored leads
 2. contact-finder        → email, phone, WhatsApp, social
 3. lead-research         → deep dive → lead-research.json (UI brief)
-4. lead-demo-site        → personalized preview HTML from research file
+4. lead-demo-site        → run `bash scripts/build.sh {slug}` (terminal only; templates on disk)
 5. pitch-generator       → personalized draft (include demo link if built)
 6. HUMAN APPROVAL        → Captain: approve / reject / edit
 7. crm-manager           → save lead + mark contacted (after manual send)

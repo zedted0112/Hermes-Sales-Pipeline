@@ -39,7 +39,11 @@ Replace `{business}`, `{city}`, `{category}`, `{slug}`:
 **Always run the script** — do not write HTML manually for gym/salon:
 
 ```bash
+```bash
+bash ~/.hermes/skills/lead-demo-site/scripts/build.sh {slug}
+# or
 python3 ~/.hermes/skills/lead-demo-site/scripts/build_demo.py {slug}
+```
 ```
 
 Example:
@@ -55,8 +59,11 @@ Templates with `{{PLACEHOLDERS}}` live in `templates/`. The script fills them fr
 
 | Category | HTML template | Reference |
 |----------|---------------|-----------|
-| Gym / fitness | `skills/lead-demo-site/templates/gym-modern.html` | Bull's Legacy Gym |
-| Beauty salon | `skills/lead-demo-site/templates/salon-modern.html` | Shear Genius Salon |
+| Gym / fitness | `gym-modern.html` | Gym Classic — schedule, plans, booking modal |
+| Gym / fitness | `gym-modern-dark.html` | Gym Modern-Dark — gold ELITE-style layout |
+| Beauty salon | `salon-modern.html` | Salon Classic — original Shear Genius layout |
+| Beauty salon | `salon-aesthetic.html` | Salon Aesthetic — newsletter-style, stats + newsletter |
+| Clothing / retail | `skills/lead-demo-site/templates/retail-modern.html` | Kashmiri Sons |
 
 Hermes loads these via `skill_view` and swaps in lead content — see `templates/SUBSTITUTION.md`.
 

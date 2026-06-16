@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{PAGE_TITLE}} — Book classes, view programs, and start your fitness journey.">
   <title>{{PAGE_TITLE}}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +17,8 @@
       --muted: #9a9a9a;
       --accent: #ff4d1a;
       --accent-2: #ffb020;
+      --accent-glow: rgba(255,77,26,.4);
+      --success: #22c55e;
       --glass: rgba(255,255,255,.06);
       --border: rgba(255,255,255,.1);
       --radius: 20px;
@@ -36,6 +39,7 @@
 
     img { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 
     .noise {
       pointer-events: none;
@@ -60,7 +64,7 @@
       border-bottom: 1px solid transparent;
     }
     .nav.scrolled {
-      background: rgba(5,5,5,.75);
+      background: rgba(5,5,5,.82);
       backdrop-filter: blur(20px) saturate(1.4);
       border-color: var(--border);
     }
@@ -78,21 +82,26 @@
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       display: grid; place-items: center; font-size: .9rem;
     }
-    .nav-links { display: none; gap: 2rem; font-size: .9rem; color: var(--muted); }
-    .nav-links a { transition: color .2s; }
+    .nav-links {
+      display: none; gap: 1.5rem; font-size: .85rem; color: var(--muted);
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { transition: color .2s; white-space: nowrap; }
     .nav-links a:hover { color: var(--text); }
     .nav-cta {
       display: inline-flex; align-items: center; gap: .4rem;
       padding: .55rem 1.1rem; border-radius: 999px;
       background: var(--text); color: #000; font-weight: 600; font-size: .85rem;
       transition: transform .25s var(--ease-spring), box-shadow .25s;
+      flex-shrink: 0;
     }
-    .nav-cta:hover { transform: scale(1.04); box-shadow: 0 8px 30px rgba(255,77,26,.35); }
+    .nav-cta:hover { transform: scale(1.04); box-shadow: 0 8px 30px var(--accent-glow); }
 
     /* Hero */
     .hero {
       min-height: 100svh; display: flex; align-items: flex-end;
-      padding: 7rem 0 4rem; position: relative;
+      padding: 7rem 0 3rem; position: relative;
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: -1; overflow: hidden;
@@ -154,12 +163,13 @@
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
       padding: .9rem 1.5rem; border-radius: 999px; font-weight: 600; font-size: .95rem;
-      border: none; cursor: pointer; transition: transform .25s var(--ease-spring), box-shadow .25s, background .25s;
+      border: none; cursor: pointer;
+      transition: transform .25s var(--ease-spring), box-shadow .25s, background .25s;
     }
     .btn:active { transform: scale(.97); }
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), #ff6b3d);
-      color: #fff; box-shadow: 0 12px 40px rgba(255,77,26,.35);
+      color: #fff; box-shadow: 0 12px 40px var(--accent-glow);
     }
     .btn-primary:hover { transform: scale(1.03); box-shadow: 0 16px 50px rgba(255,77,26,.45); }
     .btn-ghost {
@@ -169,7 +179,7 @@
 
     .stats {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
-      margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border);
+      margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);
       opacity: 0; animation: fadeUp .8s var(--ease-out) 1s forwards;
     }
     .stat strong {
@@ -177,6 +187,24 @@
       font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; line-height: 1;
     }
     .stat span { font-size: .8rem; color: var(--muted); }
+
+    /* Service chips */
+    .chips-section { padding: 1.5rem 0 0; }
+    .chips-scroll {
+      display: flex; gap: .6rem; overflow-x: auto; padding: .5rem 1.25rem 1rem;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    .chips-scroll::-webkit-scrollbar { display: none; }
+    .chip {
+      flex-shrink: 0; padding: .55rem 1.1rem; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: .82rem; font-weight: 500; color: var(--muted);
+      transition: all .25s var(--ease-out);
+    }
+    .chip:hover, .chip.active {
+      background: rgba(255,77,26,.15); border-color: rgba(255,77,26,.4);
+      color: var(--text);
+    }
 
     /* Marquee */
     .marquee-wrap {
@@ -195,13 +223,18 @@
     @keyframes scroll { to { transform: translateX(-50%); } }
 
     /* Sections */
-    section { padding: 5rem 0; }
-    .section-head { margin-bottom: 2.5rem; }
+    section { padding: 4.5rem 0; }
+    .section-head { margin-bottom: 2rem; }
     .section-head h2 {
       font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 800; letter-spacing: -.03em; margin-bottom: .5rem;
     }
-    .section-head p { color: var(--muted); max-width: 480px; }
+    .section-head p { color: var(--muted); max-width: 520px; }
+    .section-tag {
+      display: inline-block; font-size: .72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .12em; color: var(--accent);
+      margin-bottom: .5rem;
+    }
 
     .reveal {
       opacity: 0; transform: translateY(32px);
@@ -209,11 +242,8 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* Bento programs */
-    .bento {
-      display: grid; gap: 1rem;
-      grid-template-columns: 1fr;
-    }
+    /* Bento */
+    .bento { display: grid; gap: 1rem; grid-template-columns: 1fr; }
     .card {
       position: relative; border-radius: var(--radius); overflow: hidden;
       background: var(--surface-2); border: 1px solid var(--border);
@@ -236,14 +266,200 @@
       font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 700; margin-bottom: .25rem;
     }
     .card-body p { font-size: .85rem; color: rgba(255,255,255,.7); }
-
     .card.featured { grid-column: span 1; min-height: 280px; }
 
-    /* Why us */
-    .why-grid {
-      display: grid; gap: 1rem;
-      grid-template-columns: 1fr;
+    /* Schedule */
+    .schedule-panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: calc(var(--radius) + 4px); overflow: hidden;
     }
+    .schedule-tabs {
+      display: flex; gap: 0; overflow-x: auto; border-bottom: 1px solid var(--border);
+      scrollbar-width: none;
+    }
+    .schedule-tabs::-webkit-scrollbar { display: none; }
+    .schedule-tab {
+      flex: 1; min-width: 64px; padding: 1rem .5rem; text-align: center;
+      font-size: .8rem; font-weight: 600; color: var(--muted);
+      border-bottom: 2px solid transparent; transition: all .25s;
+    }
+    .schedule-tab.active {
+      color: var(--accent); border-bottom-color: var(--accent);
+      background: rgba(255,77,26,.06);
+    }
+    .schedule-tab span { display: block; font-size: .65rem; font-weight: 400; margin-top: .15rem; }
+    .schedule-body { padding: 1.25rem; }
+    .schedule-day { display: none; }
+    .schedule-day.active { display: block; }
+    .class-row {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem; border-radius: 14px; margin-bottom: .5rem;
+      background: var(--glass); border: 1px solid transparent;
+      transition: border-color .2s, background .2s;
+    }
+    .class-row:hover { border-color: var(--border); background: rgba(255,255,255,.04); }
+    .class-time {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem;
+      min-width: 72px; color: var(--accent-2);
+    }
+    .class-info { flex: 1; }
+    .class-info strong { display: block; font-size: .95rem; }
+    .class-info span { font-size: .78rem; color: var(--muted); }
+    .class-book {
+      padding: .45rem .9rem; border-radius: 999px; font-size: .75rem; font-weight: 600;
+      background: rgba(255,77,26,.15); color: var(--accent); border: 1px solid rgba(255,77,26,.3);
+      transition: all .2s;
+    }
+    .class-book:hover { background: var(--accent); color: #fff; }
+
+    /* Plans */
+    .plans-grid {
+      display: grid; gap: 1rem; grid-template-columns: 1fr;
+    }
+    .plan-card {
+      padding: 1.75rem; border-radius: var(--radius);
+      background: var(--surface); border: 1px solid var(--border);
+      transition: transform .3s var(--ease-out), border-color .3s;
+      position: relative;
+    }
+    .plan-card:hover { transform: translateY(-4px); }
+    .plan-card.popular {
+      border-color: rgba(255,77,26,.5);
+      background: linear-gradient(180deg, rgba(255,77,26,.08) 0%, var(--surface) 40%);
+    }
+    .plan-badge {
+      position: absolute; top: -10px; right: 1.25rem;
+      padding: .3rem .75rem; border-radius: 999px; font-size: .7rem; font-weight: 700;
+      background: var(--accent); color: #fff; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .plan-card h3 {
+      font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: .25rem;
+    }
+    .plan-price {
+      font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800;
+      margin: .75rem 0; letter-spacing: -.03em;
+    }
+    .plan-price small { font-size: .9rem; font-weight: 500; color: var(--muted); }
+    .plan-features { list-style: none; margin: 1.25rem 0; }
+    .plan-features li {
+      padding: .45rem 0; font-size: .88rem; color: var(--muted);
+      display: flex; align-items: flex-start; gap: .5rem;
+    }
+    .plan-features li::before { content: '✓'; color: var(--success); font-weight: 700; }
+
+    /* App teaser */
+    .app-teaser {
+      display: grid; gap: 2rem; align-items: center;
+      background: linear-gradient(135deg, var(--surface) 0%, rgba(255,77,26,.06) 100%);
+      border: 1px solid var(--border); border-radius: calc(var(--radius) + 8px);
+      padding: 2rem; overflow: hidden;
+    }
+    .app-copy h2 {
+      font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800; margin-bottom: .75rem; letter-spacing: -.03em;
+    }
+    .app-copy p { color: var(--muted); margin-bottom: 1.25rem; }
+    .app-features { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+    .app-feat {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .4rem .8rem; border-radius: 999px; font-size: .78rem;
+      background: var(--glass); border: 1px solid var(--border);
+    }
+    .phone-mock {
+      max-width: 280px; margin: 0 auto;
+      background: #0a0a0a; border-radius: 36px; padding: 12px;
+      border: 2px solid rgba(255,255,255,.12);
+      box-shadow: 0 40px 80px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.05);
+    }
+    .phone-screen {
+      border-radius: 28px; overflow: hidden; background: var(--bg);
+      min-height: 420px;
+    }
+    .phone-notch {
+      height: 28px; background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; color: var(--muted); font-weight: 600;
+    }
+    .phone-content { padding: 1rem; }
+    .phone-greeting {
+      font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: .25rem;
+    }
+    .phone-sub { font-size: .72rem; color: var(--muted); margin-bottom: 1rem; }
+    .phone-stat-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-bottom: 1rem;
+    }
+    .phone-stat {
+      padding: .6rem; border-radius: 12px; background: var(--surface);
+      text-align: center; font-size: .65rem; color: var(--muted);
+    }
+    .phone-stat strong { display: block; font-size: 1rem; color: var(--accent); font-family: 'Syne', sans-serif; }
+    .phone-class {
+      display: flex; align-items: center; gap: .6rem;
+      padding: .65rem; border-radius: 12px; background: var(--surface);
+      margin-bottom: .4rem; font-size: .75rem;
+    }
+    .phone-class .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+    }
+    .phone-cta {
+      display: block; text-align: center; margin-top: 1rem;
+      padding: .75rem; border-radius: 14px; font-weight: 600; font-size: .8rem;
+      background: linear-gradient(135deg, var(--accent), #ff6b3d); color: #fff;
+    }
+
+    /* Trainers */
+    .trainers-grid {
+      display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    .trainer-card {
+      border-radius: var(--radius); overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border);
+      transition: transform .3s var(--ease-out);
+    }
+    .trainer-card:hover { transform: translateY(-4px); }
+    .trainer-img { aspect-ratio: 1; overflow: hidden; }
+    .trainer-img img { width: 100%; height: 100%; object-fit: cover; }
+    .trainer-info { padding: 1.1rem; }
+    .trainer-info h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; }
+    .trainer-info .role { font-size: .78rem; color: var(--accent); margin-bottom: .35rem; }
+    .trainer-info p { font-size: .82rem; color: var(--muted); }
+
+    /* Testimonials */
+    .testimonials-wrap { position: relative; }
+    .testimonials-track {
+      display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+      padding-bottom: 1rem; scrollbar-width: none;
+    }
+    .testimonials-track::-webkit-scrollbar { display: none; }
+    .testimonial {
+      flex: 0 0 min(340px, 85vw); scroll-snap-align: start;
+      padding: 1.5rem; border-radius: var(--radius);
+      background: var(--surface); border: 1px solid var(--border);
+    }
+    .testimonial .stars { color: var(--accent-2); font-size: .9rem; margin-bottom: .75rem; }
+    .testimonial blockquote {
+      font-size: .95rem; line-height: 1.7; margin-bottom: 1rem; font-style: italic;
+    }
+    .testimonial cite {
+      font-style: normal; font-size: .82rem; color: var(--muted);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .testimonial cite .avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center; font-size: .75rem; font-weight: 700; color: #fff;
+    }
+    .testimonial-dots {
+      display: flex; justify-content: center; gap: .4rem; margin-top: 1rem;
+    }
+    .testimonial-dots button {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--border); transition: all .25s;
+    }
+    .testimonial-dots button.active { background: var(--accent); width: 24px; border-radius: 4px; }
+
+    /* Why us */
+    .why-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
     .why-item {
       padding: 1.5rem; border-radius: var(--radius);
       background: var(--glass); border: 1px solid var(--border);
@@ -258,18 +474,66 @@
     .why-item h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; margin-bottom: .35rem; }
     .why-item p { font-size: .9rem; color: var(--muted); }
 
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: .5rem; }
+    .faq-item {
+      border-radius: 14px; background: var(--surface); border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 1.1rem 1.25rem; text-align: left;
+      font-weight: 600; font-size: .95rem;
+    }
+    .faq-q .chevron {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+      background: var(--glass); display: grid; place-items: center;
+      font-size: .7rem; transition: transform .3s var(--ease-out);
+    }
+    .faq-item.open .faq-q .chevron { transform: rotate(180deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height .4s var(--ease-out);
+    }
+    .faq-a-inner {
+      padding: 0 1.25rem 1.1rem; font-size: .88rem; color: var(--muted); line-height: 1.7;
+    }
+    .faq-item.open .faq-a { max-height: 200px; }
+
     /* Visit */
     .visit {
       display: grid; gap: 2rem; align-items: center;
       background: var(--surface); border: 1px solid var(--border);
       border-radius: calc(var(--radius) + 8px); padding: 2rem; overflow: hidden;
     }
-    .visit-img { border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/10; }
-    .visit-img img { width: 100%; height: 100%; object-fit: cover; }
+    .visit-img { border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/10; position: relative; }
+    .visit-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .visit-photo-link {
+      display: block; width: 100%; height: 100%; position: relative;
+      transition: transform .4s var(--ease-out);
+    }
+    .visit-photo-link:hover { transform: scale(1.02); }
+    .visit-photo-link:hover .visit-map-pin { opacity: 1; transform: translateY(0); }
+    .visit-map-pin {
+      position: absolute; bottom: 1rem; left: 1rem; right: 1rem;
+      padding: .75rem 1rem; border-radius: 12px; text-align: center;
+      font-size: .85rem; font-weight: 600;
+      background: rgba(5,5,5,.85); backdrop-filter: blur(12px);
+      border: 1px solid var(--border); color: var(--text);
+      opacity: .92; transform: translateY(4px);
+      transition: opacity .25s, transform .25s var(--ease-out);
+    }
     .visit-info h2 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
     .visit-info address { font-style: normal; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.8; }
     .visit-info .hours { font-size: .9rem; color: var(--muted); margin-bottom: 1.5rem; }
     .contact-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .social-row { display: flex; gap: .6rem; margin-top: 1.25rem; }
+    .social-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .5rem 1rem; border-radius: 999px; font-size: .8rem; font-weight: 500;
+      background: var(--glass); border: 1px solid var(--border);
+      transition: all .2s;
+    }
+    .social-btn:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); }
 
     footer {
       padding: 2.5rem 0 6rem; border-top: 1px solid var(--border);
@@ -281,7 +545,7 @@
     .sticky-cta {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
       padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
-      background: rgba(5,5,5,.9); backdrop-filter: blur(16px);
+      background: rgba(5,5,5,.92); backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
       display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;
     }
@@ -293,17 +557,65 @@
     .sticky-cta .s-book { background: var(--accent); color: #fff; }
     .sticky-cta .s-wa { background: #25d366; color: #fff; }
 
+    /* Booking modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.7); backdrop-filter: blur(8px);
+      opacity: 0; visibility: hidden; transition: all .35s var(--ease-out);
+    }
+    .modal-backdrop.open { opacity: 1; visibility: visible; }
+    .modal-sheet {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 201;
+      background: var(--surface); border-radius: 24px 24px 0 0;
+      border: 1px solid var(--border); border-bottom: none;
+      padding: 1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+      transform: translateY(100%); transition: transform .4s var(--ease-out);
+      max-height: 90svh; overflow-y: auto;
+    }
+    .modal-backdrop.open + .modal-sheet,
+    .modal-sheet.open { transform: translateY(0); }
+    .modal-handle {
+      width: 40px; height: 4px; border-radius: 2px; background: var(--border);
+      margin: 0 auto 1.25rem;
+    }
+    .modal-sheet h3 {
+      font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: .35rem;
+    }
+    .modal-sheet > p { color: var(--muted); font-size: .9rem; margin-bottom: 1.25rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: .8rem; font-weight: 600; margin-bottom: .4rem; color: var(--muted); }
+    .form-group input, .form-group select {
+      width: 100%; padding: .85rem 1rem; border-radius: 12px;
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      font-size: .95rem;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none; border-color: var(--accent);
+    }
+    .modal-actions { display: grid; gap: .6rem; margin-top: 1.25rem; }
+
     @media (min-width: 640px) {
       .sticky-cta { display: none; }
       .nav-links { display: flex; }
       .bento { grid-template-columns: repeat(2, 1fr); }
       .card.featured { grid-column: span 2; min-height: 340px; }
       .why-grid { grid-template-columns: repeat(3, 1fr); }
+      .plans-grid { grid-template-columns: repeat(3, 1fr); }
+      .modal-sheet {
+        left: 50%; right: auto; bottom: 50%; width: min(440px, 92vw);
+        border-radius: var(--radius); transform: translate(-50%, 50%) scale(.95);
+        opacity: 0; visibility: hidden;
+      }
+      .modal-backdrop.open + .modal-sheet,
+      .modal-sheet.open {
+        transform: translate(-50%, 50%) scale(1); opacity: 1; visibility: visible;
+      }
     }
     @media (min-width: 900px) {
       .visit { grid-template-columns: 1.1fr 1fr; padding: 2.5rem; }
       .bento { grid-template-columns: repeat(4, 1fr); }
       .card.featured { grid-column: span 2; grid-row: span 2; min-height: 100%; }
+      .app-teaser { grid-template-columns: 1fr 1fr; padding: 2.5rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -328,10 +640,12 @@
       <a href="#" class="logo"><span class="logo-mark">{{LOGO_EMOJI}}</span> {{LOGO_NAME}}</a>
       <nav class="nav-links">
         <a href="#programs">Programs</a>
-        <a href="#why">Why Us</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#plans">Plans</a>
+        <a href="#trainers">Trainers</a>
         <a href="#visit">Visit</a>
       </nav>
-      <a href="{{NAV_CTA_HREF}}" class="nav-cta">{{NAV_CTA_TEXT}}</a>
+      <button type="button" class="nav-cta" data-open-modal>{{NAV_CTA_TEXT}}</button>
     </div>
   </header>
 
@@ -341,12 +655,10 @@
     </div>
     <div class="wrap hero-content">
       <div class="eyebrow">{{EYEBROW}}</div>
-      <h1>
-        {{HERO_H1_HTML}}
-      </h1>
+      <h1>{{HERO_H1_HTML}}</h1>
       <p class="hero-sub">{{HERO_SUB}}</p>
       <div class="hero-actions">
-        <a href="{{PRIMARY_CTA_HREF}}" class="btn btn-primary">{{PRIMARY_CTA_TEXT}}</a>
+        <button type="button" class="btn btn-primary" data-open-modal>{{PRIMARY_CTA_TEXT}}</button>
         <a href="{{SECONDARY_CTA_HREF}}" class="btn btn-ghost" target="_blank" rel="noopener">{{SECONDARY_CTA_TEXT}}</a>
       </div>
       <div class="stats">
@@ -357,20 +669,103 @@
     </div>
   </section>
 
+  <div class="chips-section">
+    <div class="chips-scroll" id="serviceChips">{{SERVICE_CHIPS_HTML}}</div>
+  </div>
+
   <div class="marquee-wrap" aria-hidden="true">
-    <div class="marquee">
-      {{MARQUEE_HTML}}
-    </div>
+    <div class="marquee">{{MARQUEE_HTML}}</div>
   </div>
 
   <section id="programs">
     <div class="wrap">
       <div class="section-head reveal">
+        <span class="section-tag">What we offer</span>
         <h2>Our Programs</h2>
         <p>{{PROGRAMS_BLURB}}</p>
       </div>
-      <div class="bento">
-        {{BENTO_HTML}}
+      <div class="bento">{{BENTO_HTML}}</div>
+    </div>
+  </section>
+
+  <section id="schedule">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="section-tag">Book a class</span>
+        <h2>Weekly Schedule</h2>
+        <p>Tap a day to see classes. Book your spot in seconds — no app download needed.</p>
+      </div>
+      <div class="schedule-panel reveal">{{SCHEDULE_HTML}}</div>
+    </div>
+  </section>
+
+  <section id="plans">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="section-tag">Membership</span>
+        <h2>Choose Your Plan</h2>
+        <p>{{PLANS_BLURB}}</p>
+      </div>
+      <div class="plans-grid">{{PLANS_HTML}}</div>
+    </div>
+  </section>
+
+  <section id="app">
+    <div class="wrap">
+      <div class="app-teaser reveal">
+        <div class="app-copy">
+          <span class="section-tag">Coming soon</span>
+          <h2>Your gym in your pocket</h2>
+          <p>Book classes, track workouts, and get reminders — the full {{LOGO_NAME}} experience on mobile.</p>
+          <div class="app-features">
+            <span class="app-feat">📅 Class booking</span>
+            <span class="app-feat">🔥 Streak tracking</span>
+            <span class="app-feat">💬 Trainer chat</span>
+            <span class="app-feat">📊 Progress stats</span>
+          </div>
+          <button type="button" class="btn btn-primary" data-open-modal>{{PRIMARY_CTA_TEXT}}</button>
+        </div>
+        <div class="phone-mock">
+          <div class="phone-screen">
+            <div class="phone-notch">{{LOGO_NAME}}</div>
+            <div class="phone-content">
+              <div class="phone-greeting">Hey, ready to train? 💪</div>
+              <div class="phone-sub">Today's classes at {{LOGO_NAME}}</div>
+              <div class="phone-stat-row">
+                <div class="phone-stat"><strong>12</strong>day streak</div>
+                <div class="phone-stat"><strong>{{STAT_RATING}}</strong>rating</div>
+                <div class="phone-stat"><strong>{{STAT_REVIEWS}}</strong>reviews</div>
+              </div>
+              {{PHONE_CLASSES_HTML}}
+              <a href="{{PRIMARY_CTA_HREF}}" class="phone-cta">{{PRIMARY_CTA_TEXT}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trainers">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="section-tag">Meet the team</span>
+        <h2>Expert Trainers</h2>
+        <p>Certified coaches who push you further — safely and with real results.</p>
+      </div>
+      <div class="trainers-grid">{{TRAINERS_HTML}}</div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="section-tag">Community</span>
+        <h2>What Members Say</h2>
+        <p>Real feedback from people who train with us every week.</p>
+      </div>
+      <div class="testimonials-wrap reveal">
+        <div class="testimonials-track" id="testimonialTrack">{{TESTIMONIALS_HTML}}</div>
+        <div class="testimonial-dots" id="testimonialDots"></div>
       </div>
     </div>
   </section>
@@ -381,9 +776,18 @@
         <h2>{{WHY_TITLE}}</h2>
         <p>{{WHY_BLURB}}</p>
       </div>
-      <div class="why-grid">
-        {{WHY_ITEMS_HTML}}
+      <div class="why-grid">{{WHY_ITEMS_HTML}}</div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="section-tag">Got questions?</span>
+        <h2>FAQ</h2>
+        <p>Everything you need to know before your first visit.</p>
       </div>
+      <div class="faq-list reveal">{{FAQ_HTML}}</div>
     </div>
   </section>
 
@@ -391,18 +795,18 @@
     <div class="wrap">
       <div class="visit reveal">
         <div class="visit-img">
-          <img src="{{VISIT_IMG}}" alt="Visit us" loading="lazy">
+          {{VISIT_MEDIA_HTML}}
         </div>
         <div class="visit-info">
           <h2>Visit Us</h2>
-          <address>
-            {{ADDRESS_HTML}}
-          </address>
+          <address>{{ADDRESS_HTML}}</address>
           <p class="hours">{{HOURS}}</p>
           <div class="contact-row">
             <a href="{{CALL_HREF}}" class="btn btn-primary">{{CALL_LABEL}}</a>
             <a href="{{WA_HREF}}" class="btn btn-ghost" target="_blank" rel="noopener">WhatsApp</a>
+            <a href="{{MAP_DIRECTIONS_HREF}}" class="btn btn-ghost" target="_blank" rel="noopener">📍 Directions</a>
           </div>
+          <div class="social-row">{{SOCIAL_LINKS_HTML}}</div>
         </div>
       </div>
     </div>
@@ -414,8 +818,33 @@
   </footer>
 
   <div class="sticky-cta">
-    <a href="{{STICKY_PRIMARY_HREF}}" class="s-book">{{STICKY_PRIMARY_TEXT}}</a>
+    <button type="button" class="s-book" data-open-modal>{{STICKY_PRIMARY_TEXT}}</button>
     <a href="{{WA_HREF}}" class="s-wa">{{STICKY_SECONDARY_TEXT}}</a>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true"></div>
+  <div class="modal-sheet" id="modalSheet" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-handle"></div>
+    <h3 id="modalTitle">Book Your Free Trial</h3>
+    <p>Reserve your spot — we'll confirm via call or WhatsApp.</p>
+    <form id="bookingForm">
+      <div class="form-group">
+        <label for="bkName">Your name</label>
+        <input id="bkName" name="name" type="text" placeholder="Full name" required>
+      </div>
+      <div class="form-group">
+        <label for="bkPhone">Phone</label>
+        <input id="bkPhone" name="phone" type="tel" placeholder="+91 98XXX XXXXX" required>
+      </div>
+      <div class="form-group">
+        <label for="bkClass">Interested in</label>
+        <select id="bkClass" name="class">{{BOOKING_OPTIONS_HTML}}</select>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primary" style="width:100%">{{PRIMARY_CTA_TEXT}}</button>
+        <button type="button" class="btn btn-ghost" id="modalClose" style="width:100%">Maybe later</button>
+      </div>
+    </form>
   </div>
 
   <script>
@@ -441,7 +870,9 @@
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const el = entry.target;
-        const target = parseFloat(el.dataset.count);
+        const raw = el.dataset.count;
+        if (raw === '—' || !raw) return;
+        const target = parseFloat(raw);
         const dec = parseInt(el.dataset.decimal || '0', 10);
         const dur = 1200;
         const start = performance.now();
@@ -457,6 +888,105 @@
       });
     }, { threshold: 0.5 });
     counters.forEach(el => countIo.observe(el));
+
+    // Schedule tabs
+    document.querySelectorAll('.schedule-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const day = tab.dataset.day;
+        tab.closest('.schedule-panel').querySelectorAll('.schedule-tab').forEach(t => t.classList.remove('active'));
+        tab.closest('.schedule-panel').querySelectorAll('.schedule-day').forEach(d => d.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('day-' + day)?.classList.add('active');
+      });
+    });
+
+    // Service chips scroll to programs
+    document.querySelectorAll('.chip').forEach((chip, i) => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        document.getElementById('programs')?.scrollIntoView({ behavior: 'smooth' });
+      });
+      if (i === 0) chip.classList.add('active');
+    });
+
+    // Testimonial dots
+    const track = document.getElementById('testimonialTrack');
+    const dotsWrap = document.getElementById('testimonialDots');
+    if (track && dotsWrap) {
+      const cards = track.querySelectorAll('.testimonial');
+      cards.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', 'Review ' + (i + 1));
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => {
+          cards[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+          dotsWrap.querySelectorAll('button').forEach((d, j) => d.classList.toggle('active', j === i));
+        });
+        dotsWrap.appendChild(dot);
+      });
+      track.addEventListener('scroll', () => {
+        const idx = Math.round(track.scrollLeft / (cards[0]?.offsetWidth + 16 || 1));
+        dotsWrap.querySelectorAll('button').forEach((d, j) => d.classList.toggle('active', j === idx));
+      }, { passive: true });
+    }
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+
+    // Booking modal
+    const backdrop = document.getElementById('modalBackdrop');
+    const sheet = document.getElementById('modalSheet');
+    const openModal = () => {
+      backdrop.classList.add('open');
+      sheet.classList.add('open');
+      backdrop.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+    const closeModal = () => {
+      backdrop.classList.remove('open');
+      sheet.classList.remove('open');
+      backdrop.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+    document.querySelectorAll('[data-open-modal]').forEach(el => el.addEventListener('click', openModal));
+    document.getElementById('modalClose')?.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', closeModal);
+
+    document.getElementById('bookingForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('bkName').value;
+      const phone = document.getElementById('bkPhone').value;
+      const cls = document.getElementById('bkClass').value;
+      const msg = encodeURIComponent(`Hi! I'd like to book a trial at {{LOGO_NAME}}.\nName: ${name}\nPhone: ${phone}\nInterested in: ${cls}`);
+      const wa = '{{WA_HREF}}';
+      if (wa && wa.startsWith('https://wa.me')) {
+        window.open(wa + (wa.includes('?') ? '&' : '?') + 'text=' + msg, '_blank');
+      } else {
+        window.location.href = '{{CALL_HREF}}';
+      }
+      closeModal();
+    });
+
+    // Class book buttons open modal with pre-selected class
+    document.querySelectorAll('.class-book').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cls = btn.dataset.class;
+        if (cls) {
+          const sel = document.getElementById('bkClass');
+          if (sel) sel.value = cls;
+        }
+        openModal();
+      });
+    });
   </script>
 </body>
 </html>
