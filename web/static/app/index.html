@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <base href="/static/app/" />
+        <title>Hermes Sales Pipeline</title>
+        <meta name="description" content="" />
+        <link
+            rel="shortcut icon"
+            href="./assets/logo/logo.png"
+            type="image/x-icon"
+        />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:title" content="Hermes Sales Pipeline" />
+        <meta property="og:description" content="" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://github.com/PaulleDemon" />
+        <!--Replace with the current website url-->
+        <meta property="og:image" content="" />
+
+        <!-- <link rel="stylesheet" href="../../tailwind-css/tailwind-runtime.css" /> -->
+        <link rel="stylesheet" href="./css/tailwind-build.css">
+        <link rel="stylesheet" href="css/index.css?v=4" />
+
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+            integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+    </head>
+    <body class="tw-flex tw-font-mono tw-min-h-[100vh] tw-flex-col tw-bg-[#181B20] tw-text-white">
+      
+
+        <header
+            class="app-header lg:tw-justify-around tw-max-w-lg:tw-px-4 tw-max-w-lg:tw-mr-auto tw-flex tw-h-[60px] tw-w-full tw-px-[5%] tw-text-white"
+        >
+            <a class="tw-h-[50px] tw-w-[50px] tw-p-[4px]" href="/app">
+                <img
+                    src="./assets/logo/logo.png"
+                    alt="logo"
+                    class="tw-object tw-h-full tw-w-full"
+                />
+            </a>
+            <div
+                class="collapsible-header animated-collapse max-lg:tw-shadow-md"
+                id="collapsed-header-items"
+            >
+                <div
+                    class="tw-flex tw-h-full tw-w-max tw-gap-5 tw-text-base tw-text-white max-lg:tw-mt-[30px] max-lg:tw-flex-col max-lg:tw-place-items-end max-lg:tw-gap-5 lg:tw-mx-auto lg:tw-place-items-center"
+                >
+                    <a class="header-links" href="/app#workflow"> Workflow </a>
+                    <a class="header-links" href="/app#pipeline"> Pipeline </a>
+                    <a class="header-links" href="/app#leads"> Data </a>
+                    <a class="header-links" href="/"> Chat </a>
+                </div>
+                <div
+                    class="tw-mx-4 tw-flex tw-place-items-center tw-gap-[20px] tw-text-base max-md:tw-w-full max-md:tw-flex-col max-md:tw-place-content-center"
+                >
+                    <a
+                        href="/app#pipeline"
+                        aria-label="Run pipeline"
+                        class="tw-rounded-full tw-bg-secondary tw-px-3 tw-py-2 tw-text-white tw-transition-transform tw-duration-[0.3s] hover:tw-translate-x-2"
+                    >
+                        <span>Run pipeline</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <button
+                class="bi bi-list tw-absolute tw-right-3 tw-top-3 tw-z-50 tw-text-3xl tw-text-white lg:tw-hidden"
+                onclick="toggleHeader()"
+                aria-label="menu"
+                id="collapse-btn"
+            ></button>
+        </header>
+
+        <section
+            class="tw-relative tw-flex tw-min-h-[100vh] hero-section tw-w-full tw-max-w-[100vw] tw-flex-col tw-overflow-hidden"
+            id="hero-section"
+        >
+            <div
+                class="hero-bg-gradient tw-flex tw-h-full tw-min-h-[100vh] tw-w-full tw-flex-col tw-place-content-center tw-gap-6 tw-p-[5%] max-lg:tw-p-4  max-xl:tw-place-items-center"
+            >
+                <div
+                    class="tw-flex tw-flex-col tw-place-content-center tw-items-center"
+                >
+                    <div
+                        class="reveal-up tw-text-center gradient-text tw-text-6xl tw-font-semibold tw-uppercase tw-leading-[80px] max-lg:tw-text-4xl max-md:tw-leading-snug"
+                    >
+                        <span class=""> Hermes </span>
+                        <br />
+                        <span class=""> Sales Pipeline </span>
+                    </div>
+                    <div
+                        class="reveal-up tw-mt-10 tw-max-w-[450px] tw-p-2 tw-text-center max-lg:tw-max-w-full"
+                    >
+                        Lead Finder → Research → Demo Website → Publish → Pitch Generator.
+                    </div>
+
+                    <div
+                        class="reveal-up tw-mt-4 tw-flex tw-place-items-center tw-gap-4 tw-overflow-hidden tw-p-2"
+                    >
+                        <a
+                            class="btn tw-transition-transform tw-duration-[0.3s] hover:tw-scale-x-[1.03]"
+                            href="/app#pipeline"
+                        >
+                            Start pipeline
+                        </a>
+                        <a
+                            class="btn !tw-bg-white !tw-text-secondary tw-transition-transform tw-duration-[0.3s] hover:tw-scale-x-[1.03]"
+                            href="/app#workflow"
+                        >
+                            <span>See workflow</span>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div
+                    class="reveal-up tw-flex tw-w-full tw-place-content-center tw-place-items-center"
+                    id="dashboard-container">
+                    
+                    <div
+                        class="tw-flex tw-max-h-[750px] tw-min-h-[450px] tw-w-full tw-min-w-[350px] tw-max-w-[950px] tw-rounded-2xl 
+                                    tw-overflow-hidden tw-shadow-xl tw-shadow-[#443e437c]
+                                    max-lg:tw-h-fit max-lg:tw-max-h-[320px] max-lg:tw-min-h-[150px] max-lg:tw-w-[320px]"
+                    id="dashboard">
+                        <img
+                            src="./assets/images/home/dashboard.png"
+                            alt="dashboard"
+                            class="tw-h-full tw-w-full tw-object-cover  max-lg:tw-object-contain"
+                        />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Workflow / orchestration -->
+        <section class="tw-relative tw-flex tw-w-full tw-flex-col tw-place-items-center tw-p-6" id="workflow">
+            <div class="tw-w-full tw-max-w-[1200px] tw-flex tw-flex-col tw-gap-8">
+                <div class="tw-text-center">
+                    <h2 class="reveal-up tw-text-4xl tw-font-semibold">Workflow</h2>
+                    <p class="reveal-up tw-mt-3 tw-text-gray-300">
+                        Hermes runs a deterministic, script-based pipeline. This is how skills connect end-to-end.
+                    </p>
+                </div>
+
+                <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-4 tw-gap-4">
+                    <div class="reveal-up tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#1d2127] tw-p-5 workflow-jump" data-goto="lead_finder" role="button" tabindex="0">
+                        <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">1</div>
+                        <div class="tw-mt-2 tw-text-xl tw-font-semibold">Lead Finder</div>
+                        <div class="tw-mt-2 tw-text-sm tw-text-gray-300">Find local businesses by city + category.</div>
+                        <div class="tw-mt-3 tw-text-xs tw-text-gray-400">Skill: <code>local-lead-finder</code></div>
+                    </div>
+                    <div class="reveal-up tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#1d2127] tw-p-5 workflow-jump" data-goto="step_research" role="button" tabindex="0">
+                        <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">2</div>
+                        <div class="tw-mt-2 tw-text-xl tw-font-semibold">Research</div>
+                        <div class="tw-mt-2 tw-text-sm tw-text-gray-300">Generate structured research JSON and save it.</div>
+                        <div class="tw-mt-3 tw-text-xs tw-text-gray-400">Skill: <code>lead-research</code> → <code>save_research.py</code></div>
+                    </div>
+                    <div class="reveal-up tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#1d2127] tw-p-5 workflow-jump" data-goto="step_build" role="button" tabindex="0">
+                        <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">3</div>
+                        <div class="tw-mt-2 tw-text-xl tw-font-semibold">Demo Website</div>
+                        <div class="tw-mt-2 tw-text-sm tw-text-gray-300">Build a template-driven demo site from research.</div>
+                        <div class="tw-mt-3 tw-text-xs tw-text-gray-400">Skill: <code>lead-demo-site</code> → <code>build.sh</code></div>
+                    </div>
+                    <div class="reveal-up tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#1d2127] tw-p-5 workflow-jump" data-goto="step_publish" role="button" tabindex="0">
+                        <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">4</div>
+                        <div class="tw-mt-2 tw-text-xl tw-font-semibold">Publish + Pitch</div>
+                        <div class="tw-mt-2 tw-text-sm tw-text-gray-300">Publish to Pages, then generate outreach pitch with demo link.</div>
+                        <div class="tw-mt-3 tw-text-xs tw-text-gray-400">Scripts: <code>publish_to_pages.py</code> • Skill: <code>pitch-generator</code></div>
+                    </div>
+                </div>
+
+                <div class="reveal-up tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#1d2127] tw-p-6">
+                    <div class="tw-text-sm tw-font-semibold">Data paths</div>
+                    <pre class="tw-mt-3 tw-whitespace-pre-wrap tw-rounded-md tw-bg-black/20 tw-border tw-border-white/10 tw-p-4 tw-text-sm tw-text-gray-300">~/.hermes/leads/
+  research/{slug}.json     # saved research (input for demo build)
+  demos/{slug}/index.html  # generated demo site
+  demos/{slug}/meta.json   # template_used + optional demo_url</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="tw-relative tw-flex tw-w-full tw-flex-col tw-place-items-center tw-p-6" id="leads">
+            <div class="tw-w-full tw-max-w-[1200px] tw-flex tw-items-center tw-justify-between tw-gap-3 tw-mb-4">
+                <h2 class="tw-text-2xl tw-font-semibold">Your data</h2>
+                <button type="button" id="btn_refresh_state" class="btn !tw-bg-white/10 !tw-text-white !tw-text-sm">Refresh</button>
+            </div>
+            <div class="tw-w-full tw-max-w-[1200px] tw-grid tw-grid-cols-1 lg:tw-grid-cols-3 tw-gap-6">
+                <a href="/app#pipeline" class="kpi-card reveal-up tw-flex tw-flex-col tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#1d2127] tw-p-6 tw-no-underline tw-text-inherit">
+                    <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Saved research</div>
+                    <div class="tw-mt-2 tw-text-4xl tw-font-semibold" id="kpi_research_count">0</div>
+                    <div class="tw-mt-2 tw-text-gray-300">Files in <code>~/.hermes/leads/research</code> — click to open pipeline</div>
+                </a>
+                <a href="/app#pipeline" class="kpi-card reveal-up tw-flex tw-flex-col tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#1d2127] tw-p-6 tw-no-underline tw-text-inherit">
+                    <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Built demos</div>
+                    <div class="tw-mt-2 tw-text-4xl tw-font-semibold" id="kpi_demos_count">0</div>
+                    <div class="tw-mt-2 tw-text-gray-300">Folders in <code>~/.hermes/leads/demos</code></div>
+                </a>
+                <a href="/app#step_publish" class="kpi-card reveal-up tw-flex tw-flex-col tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#1d2127] tw-p-6 tw-no-underline tw-text-inherit">
+                    <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Publish</div>
+                    <div class="tw-mt-2 tw-text-lg tw-font-semibold">GitHub Pages</div>
+                    <div class="tw-mt-2 tw-text-gray-300">When published, demo URLs show up in demo metadata.</div>
+                </div>
+            </div>
+        </section>
+
+                    <div class="tw-mt-2 tw-text-gray-300">Publish step in pipeline → live demo URLs</div>
+                </a>
+            </div>
+        </section>
+
+        <section class="tw-relative tw-flex tw-w-full tw-flex-col tw-place-items-center tw-p-6 tw-pb-12" id="quickstart">
+            <div class="tw-w-full tw-max-w-[720px] tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#1d2127] tw-p-6">
+                <h3 class="tw-text-xl tw-font-semibold">Quick start</h3>
+                <ol class="tw-mt-4 tw-space-y-3 tw-text-sm tw-text-gray-300 tw-list-decimal tw-pl-5">
+                    <li>Enter <strong class="tw-text-gray-200">city + category</strong> → Run lead finder</li>
+                    <li><strong class="tw-text-gray-200">Click a lead</strong> (or use Step 2 dropdown) → Run research</li>
+                    <li>Pick <strong class="tw-text-gray-200">slug + template</strong> → Build demo → Publish → Pitch</li>
+                </ol>
+                <a href="/app#pipeline" class="btn tw-mt-5 tw-inline-flex">Jump to pipeline</a>
+            </div>
+        </section>
+
+        <!-- Hermes pipeline shell -->
+        <section
+            class="tw-mt-5 tw-flex tw-w-full tw-flex-col tw-place-items-center tw-p-[2%]"
+            id="pipeline"
+        >
+            <h3
+                class="tw-text-3xl tw-font-medium tw-text-primary max-md:tw-text-2xl reveal-up"
+            >
+                Pipeline
+            </h3>
+            <p class="tw-mt-3 tw-max-w-[720px] tw-text-center tw-text-gray-300 reveal-up">
+                Single-user local workflow: Lead Finder → Research → Demo Website → Publish → Pitch.
+            </p>
+
+            <nav id="pipeline_stepper" class="pipeline-stepper reveal-up tw-mt-6 tw-w-full tw-max-w-[1200px]" aria-label="Pipeline progress">
+                <button type="button" class="pipeline-stepper-btn" data-goto="lead_finder"><span class="step-num">1</span> Find leads</button>
+                <span class="pipeline-stepper-arrow" aria-hidden="true">→</span>
+                <button type="button" class="pipeline-stepper-btn" data-goto="step_research"><span class="step-num">2</span> Research</button>
+                <span class="pipeline-stepper-arrow" aria-hidden="true">→</span>
+                <button type="button" class="pipeline-stepper-btn" data-goto="step_build"><span class="step-num">3</span> Build demo</button>
+                <span class="pipeline-stepper-arrow" aria-hidden="true">→</span>
+                <button type="button" class="pipeline-stepper-btn" data-goto="step_publish"><span class="step-num">4</span> Publish</button>
+                <span class="pipeline-stepper-arrow" aria-hidden="true">→</span>
+                <button type="button" class="pipeline-stepper-btn" data-goto="pitches"><span class="step-num">5</span> Pitch</button>
+            </nav>
+
+            <div
+                class="tw-mt-10 tw-grid tw-w-full tw-max-w-[1200px] tw-grid-cols-1 tw-gap-6 lg:tw-grid-cols-2"
+            >
+                <div
+                    class="reveal-up pipeline-step-card tw-flex tw-border-[#333a44] tw-bg-[#1d2127] tw-border-[1px] tw-flex-col tw-rounded-lg tw-p-6"
+                    id="lead_finder"
+                >
+                    <div class="tw-flex tw-items-center tw-justify-between tw-gap-3">
+                        <div>
+                            <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Step 1</div>
+                            <div class="tw-text-2xl tw-font-semibold">Lead Finder</div>
+                            <div class="tw-text-gray-400 tw-mt-1">City + category → leads list</div>
+                        </div>
+                        <span class="tw-text-xs tw-rounded-full tw-bg-white/10 tw-px-3 tw-py-1 tw-text-gray-200" id="badge_step1">Ready</span>
+                    </div>
+
+                    <div class="tw-mt-5 tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-3">
+                        <label class="tw-flex tw-flex-col tw-gap-2">
+                            <span class="tw-text-xs tw-text-gray-400">City</span>
+                            <input id="lf_city" class="pipeline-input" placeholder="Dehradun" />
+                        </label>
+                        <label class="tw-flex tw-flex-col tw-gap-2">
+                            <span class="tw-text-xs tw-text-gray-400">Category</span>
+                            <input id="lf_category" class="pipeline-input" placeholder="Gym / Salon / Retail" />
+                        </label>
+                    </div>
+
+                    <div class="tw-mt-5 tw-flex tw-flex-wrap tw-gap-3">
+                        <button id="btn_run_leads" class="btn tw-transition-transform tw-duration-[0.3s] hover:tw-scale-x-[1.02]">Run lead finder</button>
+                        <button
+                            class="btn !tw-bg-white/10 !tw-text-white tw-transition-transform tw-duration-[0.3s] hover:tw-scale-x-[1.02]"
+                            onclick="document.getElementById('lf_city').value='Dehradun';document.getElementById('lf_category').value='Gym';"
+                        >
+                            Use example
+                        </button>
+                    </div>
+
+                    <p class="tw-mt-4 tw-text-xs tw-text-gray-400">After results appear, <strong class="tw-text-gray-300">click a lead</strong> — Step 2 will open with that business pre-filled.</p>
+
+                    <div id="step_feed_lead_finder" class="step-feed tw-hidden" data-step="lead_finder">
+                        <div class="tw-flex tw-items-center tw-justify-between tw-gap-2">
+                            <span class="step-feed-status tw-text-xs tw-uppercase tw-tracking-wide tw-text-gray-400">Idle</span>
+                            <button type="button" class="btn-step-log" data-scroll-log>Full log ↑</button>
+                        </div>
+                        <div class="step-feed-message tw-mt-1 tw-text-sm tw-text-gray-200">—</div>
+                        <pre class="step-feed-preview tw-mt-2 tw-hidden tw-max-h-24 tw-overflow-y-auto tw-whitespace-pre-wrap tw-text-xs tw-text-gray-400"></pre>
+                    </div>
+
+                    <div id="main_log_panel" class="tw-mt-5">
+                        <div class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-gap-2">
+                            <span class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Live output (all steps)</span>
+                            <button type="button" id="btn_toggle_log" class="btn-link-sm" aria-expanded="true">Collapse log</button>
+                        </div>
+                        <pre id="lf_out" class="tw-whitespace-pre-wrap tw-rounded-md tw-bg-black/20 tw-border tw-border-white/10 tw-p-4 tw-text-sm tw-text-gray-300 tw-max-h-64 tw-overflow-y-auto">Run a step to see live output here.</pre>
+                    </div>
+
+                    <div class="tw-mt-5">
+                        <div class="tw-text-sm tw-font-semibold tw-mb-2">Leads</div>
+                        <div id="lead_results" class="tw-flex tw-flex-col tw-gap-2">
+                            <div class="tw-text-sm tw-text-gray-400">Run lead finder to see results.</div>
+                        </div>
+                    </div>
+
+                    <div class="tw-mt-6">
+                        <div class="tw-text-sm tw-font-semibold tw-mb-2">Latest research</div>
+                        <ul id="list_research" class="tw-flex tw-flex-col tw-gap-2"></ul>
+                    </div>
+                </div>
+
+                <div
+                    class="reveal-up tw-flex tw-bg-[#1d2127] tw-border-[1px] tw-border-[#333a44] tw-flex-col tw-rounded-lg tw-p-6"
+                    id="demos"
+                >
+                    <div class="tw-flex tw-items-center tw-justify-between tw-gap-3">
+                        <div>
+                            <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Steps 2–4</div>
+                            <div class="tw-text-2xl tw-font-semibold">Research • Demo • Publish • Pitch</div>
+                            <div class="tw-text-gray-400 tw-mt-1">Run each step individually, or as a workflow.</div>
+                        </div>
+                        <span class="tw-text-xs tw-rounded-full tw-bg-white/10 tw-px-3 tw-py-1 tw-text-gray-200">Runnable</span>
+                    </div>
+
+                    <div class="tw-mt-5 tw-rounded-md tw-bg-black/20 tw-border tw-border-white/10 tw-p-4">
+                        <div class="tw-text-xs tw-text-gray-400">Selected lead (workflow mode)</div>
+                        <div id="selected_lead" class="tw-mt-1 tw-text-sm tw-text-gray-200">None</div>
+                        <div class="tw-mt-3 tw-text-xs tw-text-gray-400">Current slug</div>
+                        <div id="current_slug" class="tw-mt-1 tw-text-sm tw-text-gray-200 tw-font-mono">—</div>
+                        <div class="tw-mt-3 tw-text-xs tw-text-gray-400">Workflow status</div>
+                        <div id="workflow_status" class="tw-mt-1 tw-text-sm tw-text-gray-200">Idle</div>
+                    </div>
+
+                    <!-- Step 2: Research -->
+                    <div class="tw-mt-5 tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#181B20] tw-p-5 pipeline-step-card" id="step_research">
+                        <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Step 2</div>
+                        <div class="tw-mt-1 tw-text-lg tw-font-semibold">Research</div>
+                        <p class="tw-mt-2 tw-text-xs tw-text-gray-400">Pick a lead from Step 1, confirm details, then run research to save <code class="tw-text-gray-300">~/.hermes/leads/research/{slug}.json</code>.</p>
+
+                        <label class="tw-mt-4 tw-flex tw-flex-col tw-gap-2">
+                            <span class="tw-text-xs tw-text-gray-400">Lead from Step 1 <span id="lead_picker_count" class="tw-text-gray-500"></span></span>
+                            <select id="research_lead_select" class="pipeline-select">
+                                <option value="">Run lead finder first, then pick a business…</option>
+                            </select>
+                        </label>
+
+                        <div class="tw-mt-4 tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-3">
+                            <label class="tw-flex tw-flex-col tw-gap-2">
+                                <span class="tw-text-xs tw-text-gray-400">Business</span>
+                                <input id="in_business" class="pipeline-input" placeholder="Bull's Legacy Gym" />
+                            </label>
+                            <label class="tw-flex tw-flex-col tw-gap-2">
+                                <span class="tw-text-xs tw-text-gray-400">City</span>
+                                <input id="in_city" class="pipeline-input" placeholder="Dehradun" />
+                            </label>
+                            <label class="tw-flex tw-flex-col tw-gap-2">
+                                <span class="tw-text-xs tw-text-gray-400">Category</span>
+                                <input id="in_category" class="pipeline-input" placeholder="Gym" />
+                            </label>
+                            <div class="tw-flex tw-flex-col tw-gap-2">
+                                <span class="tw-text-xs tw-text-gray-400">Actions</span>
+                                <button class="btn tw-w-full tw-justify-center" id="btn_run_research2">Run research on this lead</button>
+                            </div>
+                        </div>
+                        <div id="step_feed_research" class="step-feed tw-hidden" data-step="research">
+                            <div class="tw-flex tw-items-center tw-justify-between tw-gap-2">
+                                <span class="step-feed-status tw-text-xs tw-uppercase tw-tracking-wide tw-text-gray-400">Idle</span>
+                                <button type="button" class="btn-step-log" data-scroll-log>Full log ↑</button>
+                            </div>
+                            <div class="step-feed-message tw-mt-1 tw-text-sm tw-text-gray-200">—</div>
+                            <pre class="step-feed-preview tw-mt-2 tw-hidden tw-max-h-24 tw-overflow-y-auto tw-whitespace-pre-wrap tw-text-xs tw-text-gray-400"></pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Demo build -->
+                    <div class="tw-mt-5 tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#181B20] tw-p-5 pipeline-step-card" id="step_build">
+                        <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Step 3</div>
+                        <div class="tw-mt-1 tw-text-lg tw-font-semibold">Build demo</div>
+                        <div class="tw-mt-4 tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-3">
+                            <label class="tw-flex tw-flex-col tw-gap-2">
+                                <span class="tw-text-xs tw-text-gray-400">Slug <span id="slug_count" class="tw-text-gray-500"></span></span>
+                                <select id="slug_select" class="pipeline-select">
+                                    <option value="">Choose existing slug…</option>
+                                </select>
+                                <input id="in_slug" class="pipeline-input" placeholder="type or pick above" />
+                            </label>
+                            <label class="tw-flex tw-flex-col tw-gap-2">
+                                <span class="tw-text-xs tw-text-gray-400">Template</span>
+                                <select id="template_select" class="pipeline-select"></select>
+                            </label>
+                        </div>
+                        <div class="tw-mt-4 tw-flex tw-flex-wrap tw-gap-3">
+                            <button class="btn !tw-bg-white/10 !tw-text-white" id="btn_fill_slug_from_selected">Use selected lead</button>
+                            <button class="btn" id="btn_build_demo">Build demo</button>
+                        </div>
+                        <div id="step_feed_demo_build" class="step-feed tw-hidden" data-step="demo_build">
+                            <div class="tw-flex tw-items-center tw-justify-between tw-gap-2">
+                                <span class="step-feed-status tw-text-xs tw-uppercase tw-tracking-wide tw-text-gray-400">Idle</span>
+                                <button type="button" class="btn-step-log" data-scroll-log>Full log ↑</button>
+                            </div>
+                            <div class="step-feed-message tw-mt-1 tw-text-sm tw-text-gray-200">—</div>
+                            <pre class="step-feed-preview tw-mt-2 tw-hidden tw-max-h-24 tw-overflow-y-auto tw-whitespace-pre-wrap tw-text-xs tw-text-gray-400"></pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 3b: Publish -->
+                    <div class="tw-mt-5 tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#181B20] tw-p-5 pipeline-step-card" id="step_publish">
+                        <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Step 3b</div>
+                        <div class="tw-mt-1 tw-text-lg tw-font-semibold">Publish demo</div>
+                        <div class="tw-mt-4 tw-flex tw-flex-wrap tw-gap-3">
+                            <button class="btn !tw-bg-white/10 !tw-text-white" id="btn_publish_demo">Publish</button>
+                        </div>
+                        <div id="step_feed_publish" class="step-feed tw-hidden" data-step="demo_publish">
+                            <div class="tw-flex tw-items-center tw-justify-between tw-gap-2">
+                                <span class="step-feed-status tw-text-xs tw-uppercase tw-tracking-wide tw-text-gray-400">Idle</span>
+                                <button type="button" class="btn-step-log" data-scroll-log>Full log ↑</button>
+                            </div>
+                            <div class="step-feed-message tw-mt-1 tw-text-sm tw-text-gray-200">—</div>
+                            <pre class="step-feed-preview tw-mt-2 tw-hidden tw-max-h-24 tw-overflow-y-auto tw-whitespace-pre-wrap tw-text-xs tw-text-gray-400"></pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Pitch -->
+                    <div class="tw-mt-5 tw-rounded-lg tw-border tw-border-white/10 tw-bg-[#181B20] tw-p-5 pipeline-step-card" id="pitches">
+                        <div class="tw-text-xs tw-uppercase tw-tracking-wider tw-text-gray-400">Step 4</div>
+                        <div class="tw-mt-1 tw-text-lg tw-font-semibold">Pitch</div>
+                        <div class="tw-mt-4 tw-flex tw-flex-wrap tw-gap-3">
+                            <button class="btn" id="btn_generate_pitch">Generate pitch</button>
+                        </div>
+                        <div id="step_feed_pitch" class="step-feed tw-hidden" data-step="pitch">
+                            <div class="tw-flex tw-items-center tw-justify-between tw-gap-2">
+                                <span class="step-feed-status tw-text-xs tw-uppercase tw-tracking-wide tw-text-gray-400">Idle</span>
+                                <button type="button" class="btn-step-log" data-scroll-log>Full log ↑</button>
+                            </div>
+                            <div class="step-feed-message tw-mt-1 tw-text-sm tw-text-gray-200">—</div>
+                            <pre class="step-feed-preview tw-mt-2 tw-hidden tw-max-h-24 tw-overflow-y-auto tw-whitespace-pre-wrap tw-text-xs tw-text-gray-400"></pre>
+                        </div>
+                    </div>
+
+                    <div class="tw-mt-6">
+                        <div class="tw-text-sm tw-font-semibold tw-mb-2">Latest demos</div>
+                        <ul id="list_demos" class="tw-flex tw-flex-col tw-gap-2"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- removed irrelevant sections: pricing/articles/newsletter -->
+
+        <footer
+            class="tw-mt-auto tw-flex tw-w-full tw-place-content-around tw-gap-3 tw-p-[5%] tw-px-[10%] tw-text-white max-md:tw-flex-col"
+        >
+            <div
+                class="tw-flex tw-h-full tw-w-[250px] tw-flex-col tw-place-items-center tw-gap-6 max-md:tw-w-full"
+            >
+                <img
+                    src="./assets/logo/logo.png"
+                    alt="logo"
+                    srcset=""
+                    class="tw-max-w-[120px]"
+                />
+                <div class="tw-text-center tw-text-gray-300">
+                    Local-first sales pipeline UI.
+                    <br />
+                    Data lives in <code>~/.hermes/leads</code>.
+                </div>
+            </div>
+
+            <div class="tw-flex tw-h-full tw-w-[250px] tw-flex-col tw-gap-4">
+                <h2 class="tw-text-3xl max-md:tw-text-xl">Resources</h2>
+                <div class="tw-flex tw-flex-col tw-gap-3 max-md:tw-text-sm">
+                    <a href="/" class="footer-link">Chat UI</a>
+                    <a href="/api/health" class="footer-link">Health</a>
+                    <a href="/api/pipeline/state" class="footer-link">Pipeline state (JSON)</a>
+                </div>
+            </div>
+        </footer>
+    </body>
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.0/gsap.min.js"
+        integrity="sha512-B1lby8cGcAUU3GR+Fd809/ZxgHbfwJMp0jLTVfHiArTuUt++VqSlJpaJvhNtRf3NERaxDNmmxkdx2o+aHd4bvw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.0/ScrollTrigger.min.js"
+        integrity="sha512-AY2+JxnBETJ0wcXnLPCcZJIJx0eimyhz3OJ55k2Jx4RtYC+XdIi2VtJQ+tP3BaTst4otlGG1TtPJ9fKrAUnRdQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+
+    <script src="./index.js?v=9"></script>
+</html>

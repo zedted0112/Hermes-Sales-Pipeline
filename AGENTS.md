@@ -29,7 +29,9 @@ When user asks for **lead research**, **demo site**, **pitch**, or sales skills:
 → **Stop.** Not a dev project task.
 → Pipeline: `local-lead-finder` → `contact-finder` → **`lead-research`** → `lead-demo-site` → `pitch-generator`
 → Research **before** demo: `~/.hermes/leads/research/{slug}.json`
-→ Demo UI: Hermes runs `bash scripts/build.sh {slug}` (or `build_demo.py`) using templates (`gym-modern`, `salon-modern`, `retail-modern`) — **no hand-written HTML in chat**.
+→ Demo UI: Hermes runs `bash scripts/build.sh {slug}` (or `build_demo.py`) using templates (`gym-modern`, `gym-modern-dark`, `salon-modern`, `salon-aesthetic`, `retail-modern`) — **no hand-written HTML in chat**.
+→ Publish: `python3 .../publish_to_pages.py {slug}` — updates `demo_url` in demo meta.
+→ **Browser UI:** `http://127.0.0.1:8765/app` runs each step with live logs.
 → Research save: Hermes runs `python3 scripts/save_research.py {slug}` — **no "saved" without file on disk**.
 → **New skills not recognized?** Run `/reload-skills` in chat (session caches slash commands at start).
 → Do not touch Report.json or instruction.json.
@@ -57,6 +59,9 @@ When user asks for **lead research**, **demo site**, **pitch**, or sales skills:
 ## Chat UI
 
 Start locally: `PYTHONPATH=src python3 -m hermes_app.main chat`
+
+- **Chat:** `http://127.0.0.1:8765/`
+- **Sales pipeline UI:** `http://127.0.0.1:8765/app` — run lead finder, research, demo build, publish, pitch from the browser
 
 ## Telegram picks (after watcher alert)
 

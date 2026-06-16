@@ -79,6 +79,19 @@ def read_local_meta(slug: str) -> dict:
         return {}
 
 
+def write_local_demo_url(slug: str, url: str) -> None:
+    meta_path = LOCAL_DEMOS / slug / "meta.json"
+    if not meta_path.exists():
+        return
+    try:
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    except Exception:
+        meta = {}
+    meta["demo_url"] = url
+    meta["published_at"] = datetime.now(timezone.utc).isoformat()
+    meta_path.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     if len(sys.argv) < 2:
         print("Usage: publish_to_pages.py <slug> [--repo /path/to/hermes-demos] [--base-url https://...]", file=sys.stderr)
@@ -121,7 +134,8 @@ def main() -> int:
     run(["git", "commit", "-m", msg], repo_dir)
     run(["git", "push"], repo_dir)
 
-    url = f"{base_url}/demos/{slug}/"
+    url = f"{base_url.rstrip('/')}/demos/{slug}/"
+    write_local_demo_url(slug, url)
     print(json.dumps({"ok": True, "slug": slug, "url": url}))
     return 0
 
