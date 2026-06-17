@@ -76,6 +76,22 @@ const DEMO_TEMPLATES = [
     {value: "retail-modern", label: "Retail Modern"},
 ]
 
+const PIPELINE_STEP_ORDER = [
+    "lead_finder",
+    "step_research",
+    "step_build",
+    "step_publish",
+    "pitches",
+]
+
+const STEP_SKILL_PREFIX = {
+    lead_finder: "[lead-finder]",
+    research: "[lead-research]",
+    demo_build: "[build_demo.py]",
+    demo_publish: "[publish]",
+    pitch: "[pitch-generator]",
+}
+
 /**
  * Hermes app shell hooks (placeholder wiring)
  */
@@ -107,10 +123,14 @@ function hermesShellInit() {
     const slugSelect = document.getElementById("slug_select")
     const btnFillSlugFromSelected = document.getElementById("btn_fill_slug_from_selected")
     const templateSelect = document.getElementById("template_select")
-    const mainLogPanel = document.getElementById("main_log_panel")
-    const btnToggleLog = document.getElementById("btn_toggle_log")
     const btnRefreshState = document.getElementById("btn_refresh_state")
     const pipelineStepper = document.getElementById("pipeline_stepper")
+    const pipelineWorkspace = document.getElementById("pipeline")
+    const pipelineModeDesc = document.getElementById("pipeline_mode_desc")
+    const agentActivityPanel = document.getElementById("agent_activity_panel")
+    const agentKpiLeads = document.getElementById("agent_kpi_leads")
+    const agentKpiDemos = document.getElementById("agent_kpi_demos")
+    const agentKpiPublished = document.getElementById("agent_kpi_published")
     const badgeStep1 = document.getElementById("badge_step1")
     const stepBuildEl = document.getElementById("step_build")
     const stepPublishEl = document.getElementById("step_publish")
@@ -129,20 +149,132 @@ function hermesShellInit() {
     let lastLeads = []
     let selectedLeadIdx = -1
     let activeStepId = "lead_finder"
+    let pipelineMode = "guided"
 
-    function scrollToStep(stepId) {
+    function getSlug() {
+        const fromInput = (inSlug?.value || "").trim()
+        if (fromInput) return fromInput
+        const fromSelect = (slugSelect?.value || "").trim()
+        if (fromSelect) return fromSelect
+        return guessSlugFromLead(selectedLead)
+    }
+
+    function getStepCompletionState() {
+        const slug = getSlug()
+        const hasLeads = lastLeads.length > 0
+        const hasResearch = Boolean(slug && lastResearch.some((r) => r.slug === slug))
+        const demoMeta = slug ? lastDemos.find((d) => d.slug === slug) : null
+        const hasDemo = Boolean(demoMeta)
+        const hasPublished = Boolean(demoMeta?.demo_url)
+        return {
+            lead_finder: hasLeads,
+            step_research: hasResearch,
+            step_build: hasDemo,
+            step_publish: hasPublished,
+            pitches: false,
+        }
+    }
+
+    function getUnlockedStepIndex() {
+        const state = getStepCompletionState()
+        let max = 0
+        if (state.lead_finder) max = Math.max(max, 1)
+        if (state.step_research) max = Math.max(max, 2)
+        if (state.step_build) max = Math.max(max, 3)
+        if (state.step_publish) max = Math.max(max, 4)
+        if (state.pitches) max = Math.max(max, 5)
+        return max
+    }
+
+    function setPipelineMode(mode) {
+        pipelineMode = mode === "explorer" ? "explorer" : "guided"
+        if (pipelineWorkspace) {
+            pipelineWorkspace.classList.toggle("pipeline-mode-guided", pipelineMode === "guided")
+            pipelineWorkspace.classList.toggle("pipeline-mode-explorer", pipelineMode === "explorer")
+        }
+        document.querySelectorAll("[data-pipeline-mode]").forEach((btn) => {
+            const on = btn.getAttribute("data-pipeline-mode") === pipelineMode
+            btn.classList.toggle("is-active", on)
+            btn.setAttribute("aria-selected", on ? "true" : "false")
+        })
+        if (pipelineModeDesc) {
+            pipelineModeDesc.textContent =
+                pipelineMode === "guided"
+                    ? "Guided flow — complete each step to unlock the next. Live agent output on the right."
+                    : "All steps — jump to any step. Live agent activity stays on the right."
+        }
+        updateGuidedCards()
+    }
+
+    function updateStepCardBadges(state) {
+        const labels = {
+            lead_finder: state.lead_finder ? "Done" : "Ready",
+            step_research: state.step_research ? "Done" : "Pending",
+            step_build: state.step_build ? "Done" : "Pending",
+            step_publish: state.step_publish ? "Done" : "Pending",
+            pitches: "Pending",
+        }
+        if (badgeStep1 && lastLeads.length) {
+            badgeStep1.textContent = `${lastLeads.length} leads`
+        }
+        PIPELINE_STEP_ORDER.forEach((id) => {
+            const card = document.getElementById(id)
+            if (!card) return
+            const badge = card.querySelector(".step-card-badge")
+            if (badge && id !== "lead_finder") badge.textContent = labels[id] || "Pending"
+            card.classList.toggle("is-done", Boolean(state[id]))
+        })
+    }
+
+    function updateGuidedCards() {
+        const unlockedIdx = getUnlockedStepIndex()
+        PIPELINE_STEP_ORDER.forEach((id, idx) => {
+            const card = document.getElementById(id)
+            if (!card) return
+            const unlocked = idx <= unlockedIdx
+            card.classList.toggle("is-unlocked", unlocked)
+            const isActive = id === activeStepId
+            card.classList.toggle("is-active", isActive)
+            if (pipelineMode === "guided") {
+                const isDone = card.classList.contains("is-done")
+                card.classList.toggle("is-collapsed", isDone && !isActive)
+            } else {
+                card.classList.remove("is-collapsed")
+            }
+        })
+    }
+
+    function advanceGuidedStep(nextStepId) {
+        if (pipelineMode !== "guided") return
+        activeStepId = nextStepId
+        updateGuidedCards()
+        updatePipelineStepper()
+        const el = document.getElementById(nextStepId)
+        if (el) el.scrollIntoView({behavior: "smooth", block: "start"})
+    }
+
+    function scrollToStep(stepId, {mode = null} = {}) {
+        if (mode) setPipelineMode(mode)
         const el = document.getElementById(stepId)
         if (!el) return
         activeStepId = stepId
+        if (pipelineMode === "guided") {
+            const idx = PIPELINE_STEP_ORDER.indexOf(stepId)
+            if (idx >= 0) {
+                PIPELINE_STEP_ORDER.forEach((id, i) => {
+                    const card = document.getElementById(id)
+                    if (card) card.classList.toggle("is-unlocked", i <= Math.max(idx, getUnlockedStepIndex()))
+                })
+            }
+        }
         el.scrollIntoView({behavior: "smooth", block: "start"})
         updatePipelineStepper()
-        document.querySelectorAll(".pipeline-step-card").forEach((card) => {
-            card.classList.toggle("is-active-step", card.id === stepId)
-        })
+        updateGuidedCards()
     }
 
     function updatePipelineStepper() {
         if (!pipelineStepper) return
+        const state = getStepCompletionState()
         const slug = getSlug()
         const hasLeads = lastLeads.length > 0
         const hasResearch = Boolean(slug && lastResearch.some((r) => r.slug === slug))
@@ -150,15 +282,9 @@ function hermesShellInit() {
         const hasDemo = Boolean(demoMeta)
         const hasPublished = Boolean(demoMeta?.demo_url)
 
-        const stepState = {
-            lead_finder: hasLeads,
-            step_research: hasResearch,
-            step_build: hasDemo,
-            step_publish: hasPublished,
-            pitches: false,
-        }
+        const stepState = state
 
-        const order = ["lead_finder", "step_research", "step_build", "step_publish", "pitches"]
+        const order = PIPELINE_STEP_ORDER
         let suggested = "lead_finder"
         if (hasLeads && !hasResearch) suggested = "step_research"
         else if (hasResearch && !hasDemo) suggested = "step_build"
@@ -171,17 +297,28 @@ function hermesShellInit() {
             btn.classList.toggle("is-active", id === activeStepId || (!activeStepId && id === suggested))
         })
 
-        if (badgeStep1) {
-            badgeStep1.textContent = hasLeads ? `${lastLeads.length} leads` : "Ready"
+        updateStepCardBadges(stepState)
+        updateGuidedCards()
+
+        if (agentKpiLeads) agentKpiLeads.textContent = String(lastLeads.length)
+        if (agentKpiDemos) agentKpiDemos.textContent = String(lastDemos.length)
+        if (agentKpiPublished) {
+            agentKpiPublished.textContent = String(lastDemos.filter((d) => d.demo_url).length)
         }
     }
 
     function initPipelineNav() {
+        document.querySelectorAll("[data-pipeline-mode]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                setPipelineMode(btn.getAttribute("data-pipeline-mode") || "guided")
+            })
+        })
+
         if (pipelineStepper) {
             pipelineStepper.querySelectorAll("[data-goto]").forEach((btn) => {
                 btn.addEventListener("click", () => {
                     const id = btn.getAttribute("data-goto")
-                    if (id) scrollToStep(id)
+                    if (id) scrollToStep(id, {mode: "explorer"})
                 })
             })
         }
@@ -189,7 +326,7 @@ function hermesShellInit() {
         document.querySelectorAll(".workflow-jump[data-goto]").forEach((card) => {
             const go = () => {
                 const id = card.getAttribute("data-goto")
-                if (id) scrollToStep(id)
+                if (id) scrollToStep(id, {mode: "explorer"})
             }
             card.addEventListener("click", go)
             card.addEventListener("keydown", (e) => {
@@ -200,13 +337,19 @@ function hermesShellInit() {
             })
         })
 
-        if (btnToggleLog && mainLogPanel) {
-            btnToggleLog.addEventListener("click", () => {
-                const collapsed = mainLogPanel.classList.toggle("log-collapsed")
-                btnToggleLog.textContent = collapsed ? "Expand log" : "Collapse log"
-                btnToggleLog.setAttribute("aria-expanded", collapsed ? "false" : "true")
+        PIPELINE_STEP_ORDER.forEach((id) => {
+            const card = document.getElementById(id)
+            const header = card?.querySelector(".step-card-header")
+            if (!header) return
+            header.addEventListener("click", () => {
+                activeStepId = id
+                if (pipelineMode === "guided") {
+                    card.classList.remove("is-collapsed")
+                    updateGuidedCards()
+                }
+                scrollToStep(id)
             })
-        }
+        })
 
         if (btnRefreshState) {
             btnRefreshState.addEventListener("click", () => {
@@ -226,12 +369,27 @@ function hermesShellInit() {
             })
         }
 
-        if (location.hash) {
-            const id = location.hash.replace("#", "")
-            if (document.getElementById(id)) {
-                setTimeout(() => scrollToStep(id), 400)
+        function applyHashMode() {
+            const raw = (location.hash || "").replace("#", "")
+            if (raw === "pipeline-guided") {
+                setPipelineMode("guided")
+                scrollToStep("lead_finder")
+                return
+            }
+            if (raw === "pipeline") {
+                setPipelineMode("explorer")
+                pipelineWorkspace?.scrollIntoView({behavior: "smooth", block: "start"})
+                return
+            }
+            if (PIPELINE_STEP_ORDER.includes(raw)) {
+                setPipelineMode("explorer")
+                scrollToStep(raw)
             }
         }
+
+        window.addEventListener("hashchange", applyHashMode)
+        applyHashMode()
+        if (!location.hash) setPipelineMode("guided")
     }
 
     function normalizeLead(raw, fallbackCity = "", fallbackCategory = "") {
@@ -314,8 +472,8 @@ function hermesShellInit() {
         if (researchLeadSelect) researchLeadSelect.value = String(idx)
         renderLeadResults(lastLeads)
         setStatus(`Selected: ${lead.business}. Review fields below, then Run research.`)
-        if (scrollToStep2 && stepResearchEl) {
-            stepResearchEl.scrollIntoView({behavior: "smooth", block: "start"})
+        if (scrollToStep2) {
+            advanceGuidedStep("step_research")
         }
         activeStepId = scrollToStep2 ? "step_research" : "lead_finder"
         updatePipelineStepper()
@@ -472,20 +630,27 @@ function hermesShellInit() {
         if (workflowStatusEl) workflowStatusEl.textContent = msg
     }
 
-    function scrollToMainLog() {
-        if (mainLogPanel) {
-            mainLogPanel.scrollIntoView({behavior: "smooth", block: "start"})
-            mainLogPanel.classList.add("log-panel-highlight")
-            setTimeout(() => mainLogPanel.classList.remove("log-panel-highlight"), 2200)
+    function scrollToAgentLog() {
+        if (agentActivityPanel) {
+            agentActivityPanel.scrollIntoView({behavior: "smooth", block: "nearest"})
         }
         if (out) out.scrollTop = out.scrollHeight
+    }
+
+    function appendAgentLine(line, stepKey = null) {
+        if (!out) return
+        const prefix = stepKey && STEP_SKILL_PREFIX[stepKey] ? STEP_SKILL_PREFIX[stepKey] + " " : ""
+        const text = String(line ?? "").trim()
+        if (!text) return
+        out.textContent += `${prefix}${text}\n`
+        out.scrollTop = out.scrollHeight
     }
 
     function initStepFeedButtons() {
         document.querySelectorAll("[data-scroll-log]").forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 e.preventDefault()
-                scrollToMainLog()
+                scrollToAgentLog()
             })
         })
     }
@@ -647,6 +812,7 @@ function hermesShellInit() {
         if (stepKey) {
             setStepFeed(stepKey, {phase: "running", message: runningMessage, preview: []})
         }
+        if (out) out.classList.add("is-running")
 
         // Filter out raw JSON blocks from Hermes output
         let jsonLikely = false
@@ -692,10 +858,9 @@ function hermesShellInit() {
                 if (lines.length && out) {
                     const display = filterDisplayLines(lines)
                     if (display.length) {
-                        out.textContent += display.join("\n") + "\n"
+                        display.forEach((line) => appendAgentLine(line, stepKey))
                         allDisplayLines.push(...display)
                     }
-                    out.scrollTop = out.scrollHeight
                 }
                 if (stepKey && allDisplayLines.length) {
                     setStepFeed(stepKey, {
@@ -710,6 +875,8 @@ function hermesShellInit() {
             }
             if (!done) await new Promise((resolve) => setTimeout(resolve, 800))
         }
+
+        if (out) out.classList.remove("is-running")
 
         if (stepKey) {
             const preview = pickPreviewLines(allDisplayLines)
@@ -737,12 +904,14 @@ function hermesShellInit() {
         populateTemplateSelect()
         initStepFeedButtons()
         initPipelineNav()
+        setPipelineMode("guided")
         refreshState()
         return
     }
 
     initPipelineNav()
     initStepFeedButtons()
+    setPipelineMode(location.hash === "#pipeline" ? "explorer" : "guided")
 
     btn.addEventListener("click", async () => {
         const payload = {
@@ -750,7 +919,8 @@ function hermesShellInit() {
             category: (category.value || "").trim(),
         }
 
-        out.textContent = "Starting lead finder…\n"
+        out.textContent = ""
+        appendAgentLine(`scanning ${payload.city || "…"}…`, "lead_finder")
         setStepFeed("lead_finder", {phase: "running", message: "Starting lead finder…", preview: []})
         setButtonBusy(btn, true, "Finding leads…")
         try {
@@ -805,8 +975,9 @@ function hermesShellInit() {
                 selectedLeadIdx = -1
                 renderLeadResults(leads)
                 activeStepId = "lead_finder"
-                setStatus(`${leads.length} leads found — pick one in Step 1 or Step 2 dropdown.`)
+                setStatus(`${leads.length} leads found — pick one to continue.`)
                 updatePipelineStepper()
+                advanceGuidedStep("step_research")
             } else if (finalRun?.status === "done") {
                 setStatus("Lead finder finished but no structured leads parsed. Check log output.")
             }
@@ -833,7 +1004,8 @@ function hermesShellInit() {
         }
 
         const payload = {business, city: cityVal, category: categoryVal}
-        out.textContent = "Running research…\n"
+        out.textContent = ""
+        appendAgentLine(`saved research JSON for ${business}…`, "research")
         setStatus(`Research running for ${business}…`)
         setButtonBusy(btnResearch2, true, "Researching…")
         setStepFeed("research", {phase: "running", message: `Researching ${business}…`, preview: []})
@@ -850,7 +1022,7 @@ function hermesShellInit() {
         })
         setStatus(finalRun?.status === "done" ? `Research saved for ${business}.` : "Research error.")
         if (finalRun?.status === "done") {
-            activeStepId = "step_build"
+            advanceGuidedStep("step_build")
             setStatus(`Research saved. Next: build demo for ${guessSlugFromLead(selectedLead) || business}.`)
         }
         refreshState()
@@ -860,14 +1032,6 @@ function hermesShellInit() {
     }
 
     // Step 3: build demo for selected lead slug
-    function getSlug() {
-        const fromInput = (inSlug?.value || "").trim()
-        if (fromInput) return fromInput
-        const fromSelect = (slugSelect?.value || "").trim()
-        if (fromSelect) return fromSelect
-        return guessSlugFromLead(selectedLead)
-    }
-
     async function runBuild() {
         const slug = getSlug()
         if (!slug) {
@@ -875,7 +1039,8 @@ function hermesShellInit() {
             setStepFeed("demo_build", {phase: "error", message: "Enter or select a slug first.", preview: []})
             return
         }
-        out.textContent = "Building demo…\n"
+        out.textContent = ""
+        appendAgentLine(`template: ${getSelectedTemplate() || "auto"}`, "demo_build")
         setStatus("Demo build running…")
         setButtonBusy(btnBuild, true, "Building…")
         setStepFeed("demo_build", {phase: "running", message: `Building demo for ${slug}…`, preview: []})
@@ -892,7 +1057,7 @@ function hermesShellInit() {
         })
         setStatus(finalRun?.status === "done" ? `Demo built: ${slug}` : "Demo build error.")
         if (finalRun?.status === "done") {
-            activeStepId = "step_publish"
+            advanceGuidedStep("step_publish")
             setStatus(`Demo built: ${slug}. Next: publish.`)
         }
         refreshState()
@@ -908,7 +1073,8 @@ function hermesShellInit() {
             setStepFeed("demo_publish", {phase: "error", message: "Enter or select a slug first.", preview: []})
             return
         }
-        out.textContent = "Publishing demo…\n"
+        out.textContent = ""
+        appendAgentLine(`publishing ${slug}…`, "demo_publish")
         setStatus("Publish running…")
         setButtonBusy(btnPublish, true, "Publishing…")
         setStepFeed("demo_publish", {phase: "running", message: `Publishing ${slug}…`, preview: []})
@@ -926,10 +1092,11 @@ function hermesShellInit() {
         const pubUrl = finalRun?.result_json?.url
         if (finalRun?.status === "done" && pubUrl) {
             setStatus(`Published: ${pubUrl}`)
-            activeStepId = "pitches"
+            appendAgentLine(pubUrl, "demo_publish")
+            advanceGuidedStep("pitches")
         } else if (finalRun?.status === "done") {
             setStatus("Published. GitHub Pages may take 1–2 min. Next: generate pitch.")
-            activeStepId = "pitches"
+            advanceGuidedStep("pitches")
         } else {
             setStatus("Publish error.")
         }
@@ -946,7 +1113,8 @@ function hermesShellInit() {
             setStepFeed("pitch", {phase: "error", message: "Enter or select a slug first.", preview: []})
             return
         }
-        out.textContent = "Generating pitch…\n"
+        out.textContent = ""
+        appendAgentLine(`generating pitch for ${slug}…`, "pitch")
         setStatus("Pitch running…")
         setButtonBusy(btnPitch, true, "Generating…")
         setStepFeed("pitch", {phase: "running", message: `Generating pitch for ${slug}…`, preview: []})
