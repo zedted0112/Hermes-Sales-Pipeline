@@ -72,6 +72,7 @@ const DEMO_TEMPLATES = [
     {value: "gym-modern-dark", label: "Gym Modern-Dark"},
     {value: "salon-modern", label: "Salon Classic"},
     {value: "salon-aesthetic", label: "Salon Aesthetic"},
+    {value: "salon-chocolate", label: "Salon Chocolate Luxury"},
     {value: "retail-modern", label: "Retail Modern"},
 ]
 

@@ -20,6 +20,7 @@ import argparse
 import html
 import json
 import re
+import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -59,6 +60,7 @@ SALON_IMAGES = [
 HERO_GYM = "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80&auto=format&fit=crop"
 VISIT_GYM = "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1200&q=80&auto=format&fit=crop"
 HERO_SALON = "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&q=80&auto=format&fit=crop"
+HERO_SALON_CHOCOLATE = "assets/salon-chocolate-hero.webp"
 HERO_RETAIL = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80&auto=format&fit=crop"
 RETAIL_IMAGES = [
     "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&q=80&auto=format&fit=crop",
@@ -455,6 +457,30 @@ def salon_services_html(services: list[str]) -> str:
             f"        </article>"
         )
     return "\n        ".join(cards)
+
+
+def salon_services_list_html(services: list[str]) -> str:
+    picked = list(services[:6]) if services else []
+    defaults = ["Facials", "Pedicure", "Face Cleaner", "Manicure", "Hair Styling", "Makeup"]
+    while len(picked) < 4:
+        picked.append(defaults[len(picked) % len(defaults)])
+    return "\n        ".join(
+        f'<li><span>{e(s)}</span><span class="arrow" aria-hidden="true">→</span></li>' for s in picked[:6]
+    )
+
+
+def hero_mini_services_html(services: list[str]) -> str:
+    picked = list(services[:2]) if services else ["Facial Care", "Hand Cream"]
+    thumbs = [
+        "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=120&q=80&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=120&q=80&auto=format&fit=crop",
+    ]
+    cards = []
+    for i, name in enumerate(picked[:2]):
+        cards.append(
+            f'<div class="mini-card"><img src="{thumbs[i]}" alt="" loading="lazy"><span>{e(name)}</span></div>'
+        )
+    return "\n          ".join(cards)
 
 
 def salon_gallery_html() -> str:
@@ -929,7 +955,11 @@ def build_retail(data: dict) -> str:
 
 
 def build_salon(data: dict, template_name: str = "salon-modern") -> str:
-    template_file = "salon-aesthetic.html" if template_name == "salon-aesthetic" else "salon-modern.html"
+    template_files = {
+        "salon-aesthetic": "salon-aesthetic.html",
+        "salon-chocolate": "salon-chocolate.html",
+    }
+    template_file = template_files.get(template_name, "salon-modern.html")
     template = (TEMPLATES_DIR / template_file).read_text(encoding="utf-8")
     meta = data["meta"]
     ui = data["content_for_ui"]
@@ -1006,7 +1036,9 @@ def build_salon(data: dict, template_name: str = "salon-modern") -> str:
         "PRIMARY_CTA_TEXT": e(pri_text),
         "SECONDARY_CTA_HREF": sec_href,
         "SECONDARY_CTA_TEXT": e(sec_text),
-        "HERO_IMG": HERO_SALON,
+        "HERO_IMG": HERO_SALON_CHOCOLATE if template_name == "salon-chocolate" else HERO_SALON,
+        "HERO_MINI_SERVICES_HTML": hero_mini_services_html(services),
+        "SERVICES_LIST_HTML": salon_services_list_html(services),
         "FLOAT_HOURS": e(data.get("offerings", {}).get("hours") or "Mon–Sat 9am–9pm"),
         "FLOAT_LOCATION": e(f"{loc.get('area') or loc.get('city')} · {meta['city']}"),
         "MARQUEE_HTML": marquee_html(services[:6] + ["Unisex Salon"]),
@@ -1054,6 +1086,12 @@ def write_outputs(data: dict, html: str, template_name: str, output_dir: Path | 
     out_dir.mkdir(parents=True, exist_ok=True)
     html_path = out_dir / "index.html"
     html_path.write_text(html, encoding="utf-8")
+    if template_name == "salon-chocolate":
+        asset_src = TEMPLATES_DIR / "assets" / "salon-chocolate-hero.webp"
+        if asset_src.is_file():
+            assets_dir = out_dir / "assets"
+            assets_dir.mkdir(exist_ok=True)
+            shutil.copy2(asset_src, assets_dir / "salon-chocolate-hero.webp")
     meta = {
         "business": data["meta"]["business"],
         "city": data["meta"]["city"],
@@ -1077,7 +1115,14 @@ def main() -> int:
     parser.add_argument("--research", help="Path to research JSON (overrides slug lookup)")
     parser.add_argument(
         "--template",
-        choices=["gym-modern", "gym-modern-dark", "salon-modern", "salon-aesthetic", "retail-modern"],
+        choices=[
+            "gym-modern",
+            "gym-modern-dark",
+            "salon-modern",
+            "salon-aesthetic",
+            "salon-chocolate",
+            "retail-modern",
+        ],
         help="Override automatic template pick",
     )
     parser.add_argument("--output-dir", help="Write demo into this directory (root).")
@@ -1095,7 +1140,7 @@ def main() -> int:
         html = build_gym(data, template_name)
     elif template_name == "retail-modern":
         html = build_retail(data)
-    elif template_name in {"salon-modern", "salon-aesthetic"}:
+    elif template_name in {"salon-modern", "salon-aesthetic", "salon-chocolate"}:
         html = build_salon(data, template_name)
     else:
         raise SystemExit(f"Unknown template '{template_name}'")

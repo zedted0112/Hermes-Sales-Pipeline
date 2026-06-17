@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --beige: #f5ebe0;
+      --beige-deep: #e8d5c4;
+      --chocolate: #6d4c41;
+      --chocolate-dark: #4e342e;
+      --blush: #f3d5c8;
+      --ink: #2a211c;
+      --muted: #7a6a62;
+      --white: #ffffff;
+      --radius: 20px;
+      --radius-pill: 999px;
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--beige);
+      color: var(--ink);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      border-radius: 0 0 32px 32px;
+      overflow: hidden;
+      color: #fff;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('{{HERO_IMG}}') center/cover no-repeat;
+      transform: scale(1.02);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg, rgba(78,52,46,.82) 0%, rgba(78,52,46,.45) 45%, rgba(0,0,0,.15) 100%);
+    }
+    .hero-inner {
+      position: relative; z-index: 2;
+      min-height: 92vh;
+      display: flex; flex-direction: column;
+      padding: 1.25rem 1.25rem 2rem;
+    }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      max-width: 1180px; width: 100%; margin: 0 auto;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; font-weight: 600; letter-spacing: .04em;
+    }
+    .nav-pills {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      background: rgba(255,255,255,.12);
+      padding: .35rem; border-radius: var(--radius-pill);
+      backdrop-filter: blur(8px);
+    }
+    .nav-pills a {
+      padding: .45rem 1rem; border-radius: var(--radius-pill);
+      font-size: .8rem; font-weight: 500; color: rgba(255,255,255,.85);
+      transition: background .2s, color .2s;
+    }
+    .nav-pills a.active, .nav-pills a:hover {
+      background: var(--white); color: var(--chocolate-dark);
+    }
+    .profile-dot {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(255,255,255,.2); border: 2px solid rgba(255,255,255,.35);
+    }
+    .hero-main {
+      flex: 1; display: flex; align-items: center;
+      max-width: 1180px; width: 100%; margin: 0 auto;
+      padding: 2rem 0;
+    }
+    .hero-card {
+      max-width: 520px;
+      background: rgba(109, 76, 65, .88);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      padding: 2rem 2rem 2.25rem;
+      box-shadow: 0 24px 60px rgba(0,0,0,.25);
+    }
+    .hero-card small {
+      display: block; font-size: .72rem; letter-spacing: .16em;
+      text-transform: uppercase; opacity: .85; margin-bottom: .75rem;
+    }
+    .hero-card h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.85rem, 4.5vw, 2.65rem);
+      font-weight: 600; line-height: 1.15; margin-bottom: 1rem;
+    }
+    .hero-card p {
+      font-size: .98rem; opacity: .92; margin-bottom: 1.5rem; max-width: 42ch;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+      padding: .8rem 1.35rem; border-radius: var(--radius-pill);
+      font-size: .88rem; font-weight: 600; border: none; cursor: pointer;
+      transition: transform .2s var(--ease), box-shadow .2s;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn-light { background: var(--white); color: var(--chocolate-dark); }
+    .btn-light:hover { box-shadow: 0 12px 28px rgba(0,0,0,.2); }
+    .btn-outline-light {
+      background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.45);
+    }
+    .btn-outline-light:hover { background: rgba(255,255,255,.12); }
+    .hero-mini {
+      display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem;
+    }
+    .mini-card {
+      flex: 1 1 140px; min-width: 130px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 14px; padding: .75rem;
+      display: flex; align-items: center; gap: .65rem;
+      font-size: .78rem; font-weight: 500;
+    }
+    .mini-card img {
+      width: 44px; height: 44px; border-radius: 10px; object-fit: cover;
+    }
+
+    /* Sections */
+    section { padding: 4.5rem 0; }
+    .section-head {
+      display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+      gap: 1.25rem; margin-bottom: 2rem;
+    }
+    .section-head h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.75rem, 4vw, 2.35rem); font-weight: 600; max-width: 16ch;
+    }
+    .section-kicker {
+      font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .5rem;
+    }
+    .circle-btn {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 1px solid var(--chocolate); background: var(--white);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; transition: transform .2s, background .2s;
+    }
+    .circle-btn:hover { transform: translateY(-2px); background: var(--blush); }
+
+    .about-grid {
+      display: grid; gap: 1rem;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .about-card {
+      background: var(--white); border-radius: var(--radius);
+      overflow: hidden; box-shadow: 0 8px 30px rgba(109,76,65,.08);
+    }
+    .about-card img { width: 100%; height: 220px; object-fit: cover; }
+    .about-card .body { padding: 1.25rem; }
+    .about-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: .5rem; }
+    .about-card p { font-size: .9rem; color: var(--muted); }
+    .span-5 { grid-column: span 12; }
+    .span-7 { grid-column: span 12; }
+    @media (min-width: 768px) {
+      .span-5 { grid-column: span 5; }
+      .span-7 { grid-column: span 7; }
+    }
+
+    .services-layout {
+      display: grid; gap: 2rem; align-items: start;
+    }
+    @media (min-width: 900px) {
+      .services-layout { grid-template-columns: 1fr 1fr; }
+    }
+    .service-list { list-style: none; display: grid; gap: .65rem; }
+    .service-list li {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      background: var(--white); border-radius: var(--radius-pill);
+      padding: .85rem 1.1rem; font-weight: 500;
+      box-shadow: 0 4px 16px rgba(109,76,65,.06);
+    }
+    .service-list .arrow {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--beige-deep); display: grid; place-items: center;
+      font-size: .85rem; flex-shrink: 0;
+    }
+    .services-visual img {
+      border-radius: var(--radius); width: 100%; min-height: 320px; object-fit: cover;
+    }
+
+    .quote-band {
+      background: var(--chocolate); color: #fff;
+      border-radius: var(--radius); padding: 2rem;
+      text-align: center; font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 3vw, 1.65rem); font-style: italic;
+    }
+
+    .gallery-grid {
+      display: grid; gap: 1rem;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 768px) {
+      .gallery-grid { grid-template-columns: 2fr 1fr 1fr; }
+      .gallery-grid .wide { grid-row: span 2; }
+    }
+    .gallery-grid img {
+      width: 100%; height: 100%; min-height: 160px;
+      object-fit: cover; border-radius: var(--radius);
+    }
+
+    .visit {
+      background: var(--white); border-radius: 28px 28px 0 0;
+      margin-top: 1rem; padding: 3.5rem 0 6rem;
+    }
+    .visit-grid {
+      display: grid; gap: 2rem; align-items: center;
+    }
+    @media (min-width: 768px) {
+      .visit-grid { grid-template-columns: 1fr 1fr; }
+    }
+    address { font-style: normal; color: var(--muted); margin: 1rem 0; line-height: 1.8; }
+    .hours { font-size: .95rem; color: var(--muted); margin-bottom: 1.25rem; }
+    .pills { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .pills span {
+      font-size: .75rem; padding: .35rem .75rem; border-radius: var(--radius-pill);
+      background: var(--beige); color: var(--chocolate-dark);
+    }
+
+    footer {
+      text-align: center; padding: 1.5rem; font-size: .85rem; color: var(--muted);
+      background: var(--white);
+    }
+
+    .sticky-cta {
+      position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);
+      z-index: 90; display: flex; gap: .5rem; padding: .4rem;
+      background: rgba(255,255,255,.95); border-radius: var(--radius-pill);
+      box-shadow: 0 12px 40px rgba(0,0,0,.15); backdrop-filter: blur(12px);
+    }
+    .sticky-cta a {
+      padding: .7rem 1.25rem; border-radius: var(--radius-pill);
+      font-size: .85rem; font-weight: 600;
+    }
+    .sticky-cta .book { background: var(--chocolate); color: #fff; }
+    .sticky-cta .alt { color: var(--chocolate-dark); }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+  <header class="hero" id="top">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="topbar">
+        <div class="logo">{{LOGO_HTML}}</div>
+        <nav class="nav-pills" aria-label="Primary">
+          <a href="#top" class="active">Home</a>
+          <a href="#services">Services</a>
+          <a href="#about">About</a>
+          <a href="#visit">Visit</a>
+        </nav>
+        <div class="profile-dot" aria-hidden="true"></div>
+      </div>
+      <div class="hero-main">
+        <div class="hero-card">
+          <small>{{HERO_BADGE}}</small>
+          <h1>{{HERO_H1}}</h1>
+          <p>{{HERO_SUB}}</p>
+          <div class="hero-actions">
+            <a href="{{PRIMARY_CTA_HREF}}" class="btn btn-light">{{PRIMARY_CTA_TEXT}}</a>
+            <a href="{{SECONDARY_CTA_HREF}}" class="btn btn-outline-light" target="_blank" rel="noopener">{{SECONDARY_CTA_TEXT}}</a>
+          </div>
+          <div class="hero-mini">{{HERO_MINI_SERVICES_HTML}}</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-kicker">Welcome</div>
+          <h2>Your beauty and confidence start here</h2>
+        </div>
+        <a href="#about" class="circle-btn" aria-label="About us">↗</a>
+      </div>
+      <div class="about-grid reveal">
+        <div class="about-card span-5">
+          <img src="{{VISIT_IMG}}" alt="Beauty experience" loading="lazy">
+          <div class="body">
+            <h3>Revitalize your skin and spirit</h3>
+            <p>{{ABOUT_BLURB}}</p>
+          </div>
+        </div>
+        <div class="about-card span-7">
+          <img src="{{HERO_IMG}}" alt="Salon interior" loading="lazy" style="height:280px">
+          <div class="body">
+            <h3>Discover your beauty potential</h3>
+            <p>{{ABOUT_BODY}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-kicker">What we offer</div>
+          <h2>Services we provide</h2>
+          <p style="color:var(--muted);max-width:40ch;margin-top:.5rem">{{SERVICES_BLURB}}</p>
+        </div>
+      </div>
+      <div class="services-layout reveal">
+        <ul class="service-list">{{SERVICES_LIST_HTML}}</ul>
+        <div class="services-visual">
+          <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&q=80&auto=format&fit=crop" alt="Hair and beauty" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap reveal">
+      <div class="quote-band">“{{QUOTE}}”</div>
+      <div class="pills">{{PILLS_HTML}}</div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-kicker">Gallery</div>
+          <h2>Exclusive beauty transformation awaits</h2>
+        </div>
+      </div>
+      <div class="gallery-grid reveal">{{GALLERY_HTML}}</div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit">
+    <div class="wrap">
+      <div class="visit-grid reveal">
+        <div>
+          <div class="section-kicker">Visit us</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:.5rem">Find {{LOGO_HTML}}</h2>
+          <address>{{ADDRESS_HTML}}</address>
+          <p class="hours">{{HOURS}}</p>
+          <div class="hero-actions">
+            <a href="{{VISIT_PRIMARY_HREF}}" class="btn btn-light" style="background:var(--chocolate);color:#fff">{{VISIT_PRIMARY_TEXT}}</a>
+            <a href="{{VISIT_SECONDARY_HREF}}" class="btn btn-outline-light" style="color:var(--chocolate);border-color:var(--chocolate)" target="_blank" rel="noopener">{{VISIT_SECONDARY_TEXT}}</a>
+          </div>
+        </div>
+        <div>
+          <img src="{{VISIT_IMG}}" alt="Visit us" style="border-radius:var(--radius);width:100%;min-height:280px;object-fit:cover" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>{{FOOTER_TEXT}}</footer>
+
+  <div class="sticky-cta">
+    <a href="{{STICKY_PRIMARY_HREF}}" class="book">{{STICKY_PRIMARY_TEXT}}</a>
+    <a href="{{STICKY_SECONDARY_HREF}}" class="alt">{{STICKY_SECONDARY_TEXT}}</a>
+  </div>
+
+  <script>
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = `${(i % 4) * 0.07}s`;
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

@@ -109,6 +109,7 @@ Only after script succeeds:
 | Gym, fitness, sports | `gym-modern-dark` | Gym Modern-Dark — gold ELITE-style |
 | Salon, spa, beauty | `salon-modern` | Salon Classic — soft cream layout |
 | Salon, spa, beauty | `salon-aesthetic` | Salon Aesthetic — newsletter-style layout |
+| Salon, spa, beauty parlour | `salon-chocolate` | Salon Chocolate Luxury — warm beige/brown hero |
 | Clothing, boutique, retail | `retail-modern` | Retail — boutique storefront |
 
 By default the script picks template from `meta.category` in research JSON.
@@ -130,11 +131,13 @@ For **salon** leads, if Captain has not picked yet:
 - Ask once:  
   - **Option 1:** Salon Classic (`salon-modern`)  
   - **Option 2:** Salon Aesthetic (`salon-aesthetic`)
+  - **Option 3:** Salon Chocolate Luxury (`salon-chocolate`)
 - After they answer, run:
 
 ```bash
 bash scripts/build.sh {slug} salon-modern      # option 1
 bash scripts/build.sh {slug} salon-aesthetic   # option 2
+bash scripts/build.sh {slug} salon-chocolate   # option 3
 ```
 
 ## Mode override

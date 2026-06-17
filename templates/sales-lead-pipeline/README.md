@@ -63,6 +63,7 @@ Templates with `{{PLACEHOLDERS}}` live in `templates/`. The script fills them fr
 | Gym / fitness | `gym-modern-dark.html` | Gym Modern-Dark — gold ELITE-style layout |
 | Beauty salon | `salon-modern.html` | Salon Classic — original Shear Genius layout |
 | Beauty salon | `salon-aesthetic.html` | Salon Aesthetic — newsletter-style, stats + newsletter |
+| Beauty parlour | `salon-chocolate.html` | Salon Chocolate Luxury — warm beige/brown hero |
 | Clothing / retail | `skills/lead-demo-site/templates/retail-modern.html` | Kashmiri Sons |
 
 Hermes loads these via `skill_view` and swaps in lead content — see `templates/SUBSTITUTION.md`.

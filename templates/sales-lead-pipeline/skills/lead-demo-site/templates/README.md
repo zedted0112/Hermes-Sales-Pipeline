@@ -14,6 +14,7 @@ skill_view(name="lead-demo-site", file_path="templates/gym-modern.html")
 skill_view(name="lead-demo-site", file_path="templates/salon-modern.html")
 skill_view(name="lead-demo-site", file_path="templates/gym-modern-dark.html")
 skill_view(name="lead-demo-site", file_path="templates/retail-modern.html")
+skill_view(name="lead-demo-site", file_path="templates/salon-chocolate.html")
 ```
 
 ## Build procedure
