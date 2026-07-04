@@ -11,6 +11,8 @@ venv/
 .env
 .env.*
 !.env.example
+.uv/
+uv.lock
 
 # Secrets & local config (keys live in ~/.hermes/.env, never commit)
 *.pem
@@ -20,19 +22,41 @@ credentials.json
 
 # OS / IDE
 .DS_Store
+Thumbs.db
 .idea/
 .vscode/
+.cursor/
 *.swp
 *.swo
+*~
+
+# Frontend (Tailwind / npm if added under web/static/app)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dropped design assets — keep images in templates/.../assets/ or web/static/app/assets/
+src/hermes_app/*.webp
+src/hermes_app/*.png
+src/hermes_app/*.jpg
+src/hermes_app/*.jpeg
+src/hermes_app/*.gif
+src/hermes_app/*.svg
 
 # Runtime / logs
 data/notes.log
 memory/*.json
 *.log
 
-# Test / cache
+# Test / cache / coverage
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 htmlcov/
 .coverage
+.tox/
+.nox/
+
+# Local scratch / one-off scripts (optional)
+temp_*.py
